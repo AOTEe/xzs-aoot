@@ -132,13 +132,13 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             ExamPaperTitleItemVM tTitleVM = modelMapper.map(t, ExamPaperTitleItemVM.class);
             List<QuestionEditRequestVM> questionItemsVM = t.getQuestionItems().stream().map(i -> {
                 // i:examPaperTitleItemObjects每一项中的questionItems(有多个examPaperQuestionItemObject)
-                Question question = new Question();
-                for (Question questionItem : questions) {
-                    if (questionItem.getId().equals(i.getId()))
-                        question = questionItem;
-                }
-                //Question question = questions.stream().filter(q -> q.getId().equals(i.getId())).findFirst().orElse(null);
-                System.out.println(question);
+//                Question question = new Question();
+//                for (Question questionItem : questions) {
+//                    if (questionItem.getId().equals(i.getId()))
+//                        question = questionItem;
+//                }
+                //效果同上
+                Question question = questions.stream().filter(q -> q.getId().equals(i.getId())).findFirst().get();
                 QuestionEditRequestVM questionEditRequestVM = questionService.getQuestionEditRequestVM(question);
                 questionEditRequestVM.setItemOrder(i.getItemOrder());
                 return questionEditRequestVM;
