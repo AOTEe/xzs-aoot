@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mindskip.xzs.repository.QuestionMapper">
+  <resultMap id="BaseResultMap" type="com.mindskip.xzs.domain.Question">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="question_type" jdbcType="INTEGER" property="questionType" />
+    <result column="subject_id" jdbcType="VARCHAR" property="subjectId" />
+    <result column="tags" jdbcType="VARCHAR" property="tags" />
+    <result column="tags_name" jdbcType="VARCHAR" property="tagsName" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="grade_level" jdbcType="INTEGER" property="gradeLevel" />
+    <result column="difficult" jdbcType="INTEGER" property="difficult" />
+    <result column="correct" jdbcType="VARCHAR" property="correct" />
+    <result column="info_text_content_id" jdbcType="VARCHAR" property="infoTextContentId" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, question_type, subject_id, tags, tags_name, score, grade_level, difficult, correct, info_text_content_id,
+    create_user, status, create_time, deleted
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_question
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_question
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mindskip.xzs.domain.Question" useGeneratedKeys="true" keyProperty="id">
+    insert into t_question (id, question_type, subject_id,tags,tags_name,
+      score, grade_level, difficult,
+      correct, info_text_content_id, create_user,
+      status, create_time, deleted
+      )
+    values (#{id,jdbcType=VARCHAR}, #{questionType,jdbcType=INTEGER}, #{subjectId,jdbcType=VARCHAR},
+      #{tags,jdbcType=VARCHAR},#{tagsName,jdbcType=VARCHAR},
+      #{score,jdbcType=INTEGER}, #{gradeLevel,jdbcType=INTEGER}, #{difficult,jdbcType=INTEGER},
+      #{correct,jdbcType=VARCHAR}, #{infoTextContentId,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR},
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mindskip.xzs.domain.Question" useGeneratedKeys="true" keyProperty="id">
+    insert into t_question
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="questionType != null">
+        question_type,
+      </if>
+      <if test="subjectId != null">
+        subject_id,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="tags != null">
+        tags,
+      </if>
+      <if test="tagsName != null">
+        tags_name,
+      </if>
+      <if test="gradeLevel != null">
+        grade_level,
+      </if>
+      <if test="difficult != null">
+        difficult,
+      </if>
+      <if test="correct != null">
+        correct,
+      </if>
+      <if test="infoTextContentId != null">
+        info_text_content_id,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="questionType != null">
+        #{questionType,jdbcType=INTEGER},
+      </if>
+      <if test="subjectId != null">
+        #{subjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="tags != null">
+        #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="tagsName != null">
+        #{tagsName,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeLevel != null">
+        #{gradeLevel,jdbcType=INTEGER},
+      </if>
+      <if test="difficult != null">
+        #{difficult,jdbcType=INTEGER},
+      </if>
+      <if test="correct != null">
+        #{correct,jdbcType=VARCHAR},
+      </if>
+      <if test="infoTextContentId != null">
+        #{infoTextContentId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mindskip.xzs.domain.Question">
+    update t_question
+    <set>
+      <if test="questionType != null">
+        question_type = #{questionType,jdbcType=INTEGER},
+      </if>
+      <if test="subjectId != null">
+        subject_id = #{subjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="gradeLevel != null">
+        grade_level = #{gradeLevel,jdbcType=INTEGER},
+      </if>
+      <if test="difficult != null">
+        difficult = #{difficult,jdbcType=INTEGER},
+      </if>
+      <if test="correct != null">
+        correct = #{correct,jdbcType=VARCHAR},
+      </if>
+      <if test="infoTextContentId != null">
+        info_text_content_id = #{infoTextContentId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="tags != null">
+        tags = #{tags,jdbcType=VARCHAR},
+      </if>
+      <if test="tagsName != null">
+        tags_name = #{tagsName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mindskip.xzs.domain.Question">
+    update t_question
+    set question_type = #{questionType,jdbcType=INTEGER},
+      subject_id = #{subjectId,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      grade_level = #{gradeLevel,jdbcType=INTEGER},
+      difficult = #{difficult,jdbcType=INTEGER},
+      correct = #{correct,jdbcType=VARCHAR},
+      info_text_content_id = #{infoTextContentId,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+
+
+  <select id="page" resultMap="BaseResultMap" parameterType="com.mindskip.xzs.viewmodel.admin.question.QuestionPageRequestVM">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_question
+    <where>
+        and deleted=0
+      <if test="id != null ">
+        and id= #{id}
+      </if>
+      <if test="level != null ">
+        and grade_level= #{level}
+      </if>
+      <if test="subjectId != null ">
+        and subject_id= #{subjectId}
+      </if>
+      <if test="questionType != null ">
+        and question_type= #{questionType}
+      </if>
+    </where>
+  </select>
+
+
+
+  <select id="selectByIds" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_question where id in
+    <foreach item="id" collection="ids" open="(" separator=","
+             close=")">
+      #{id}
+    </foreach>
+  </select>
+
+
+  <select id="selectAllCount"  resultType="java.lang.Integer">
+		SELECT count(*) from t_question where  deleted=0
+	</select>
+
+  <select id="selectCountByDate"  resultType="com.mindskip.xzs.domain.other.KeyValue">
+		SELECT create_time as name,COUNT(create_time) as value from
+		        (
+				  SELECT DATE_FORMAT(create_time,'%Y-%m-%d') as create_time from t_question
+					WHERE  deleted=0  and  create_time  between  #{startTime}  and  #{endTime}
+				) a
+		GROUP BY create_time
+	</select>
+
+  <select id="selectQuestionByCondition"  resultType="java.lang.String">
+    select id FROM  t_question
+    <where>
+      and deleted=0
+      <if test="difficult != null ">
+        and difficult= #{difficult}
+      </if>
+      <if test="tags != null ">
+        and tags= #{tags}
+      </if>
+      <if test="subjectId != null ">
+        and subject_id= #{subjectId}
+      </if>
+      <if test="questionType != null ">
+        and question_type= #{questionType}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectCountByCondition"  resultType="java.lang.Integer">
+    select count(*) FROM  t_question
+    <where>
+      and deleted=0
+      <if test="difficult != null ">
+        and difficult= #{difficult}
+      </if>
+      <if test="tags != null ">
+        and tags= #{tags}
+      </if>
+      <if test="subjectId != null ">
+        and subject_id= #{subjectId}
+      </if>
+      <if test="questionType != null ">
+        and question_type= #{questionType}
+      </if>
+    </where>
+  </select>
+
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mindskip.xzs.repository.TaskExamCustomerAnswerMapper">
+  <resultMap id="BaseResultMap" type="com.mindskip.xzs.domain.TaskExamCustomerAnswer">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="task_exam_id" jdbcType="VARCHAR" property="taskExamId" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="text_content_id" jdbcType="VARCHAR" property="textContentId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, task_exam_id, create_user, create_time, text_content_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_task_exam_customer_answer
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_task_exam_customer_answer
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mindskip.xzs.domain.TaskExamCustomerAnswer" useGeneratedKeys="true" keyProperty="id">
+    insert into t_task_exam_customer_answer (id, task_exam_id, create_user,
+      create_time, text_content_id)
+    values (#{id,jdbcType=VARCHAR}, #{taskExamId,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{textContentId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mindskip.xzs.domain.TaskExamCustomerAnswer" useGeneratedKeys="true" keyProperty="id">
+    insert into t_task_exam_customer_answer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="taskExamId != null">
+        task_exam_id,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="textContentId != null">
+        text_content_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="taskExamId != null">
+        #{taskExamId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="textContentId != null">
+        #{textContentId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mindskip.xzs.domain.TaskExamCustomerAnswer">
+    update t_task_exam_customer_answer
+    <set>
+      <if test="taskExamId != null">
+        task_exam_id = #{taskExamId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="textContentId != null">
+        text_content_id = #{textContentId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mindskip.xzs.domain.TaskExamCustomerAnswer">
+    update t_task_exam_customer_answer
+    set task_exam_id = #{taskExamId,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      text_content_id = #{textContentId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+
+
+  <select id="getByTUid"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_task_exam_customer_answer
+    where task_exam_id = #{tid} and create_user=#{uid}
+    limit 1
+  </select>
+
+
+  <select id="selectByTUid"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_task_exam_customer_answer
+    where create_user=#{uid} and
+    task_exam_id in
+    <foreach collection="taskIds" open="(" close=")" separator="," item="id">
+      #{id}
+    </foreach>
+  </select>
+
+</mapper>

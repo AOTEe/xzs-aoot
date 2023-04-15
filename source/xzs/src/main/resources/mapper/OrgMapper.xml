@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mindskip.xzs.repository.OrgMapper">
+
+
+  <select id="list" resultType="com.mindskip.xzs.bean.Org" parameterType="com.mindskip.xzs.bean.Org">
+    SELECT *
+    FROM t_org
+    <where>
+      <if test="uuid != null ">
+        and uuid= #{uuid}
+      </if>
+      <if test="orgName != null ">
+        and org_name= #{orgName}
+      </if>
+      <if test="belongTo != null ">
+        and belong_to= #{belongTo}
+      </if>
+      <if test="orgType != null ">
+        and org_type= #{orgType}
+      </if>
+    </where>
+
+  </select>
+
+  <select id="listCount" resultType="java.lang.Integer"  parameterType="com.mindskip.xzs.bean.Org">
+    SELECT
+    count(1)
+    FROM t_org
+    <where>
+      <if test="uuid != null ">
+        and uuid= #{uuid}
+      </if>
+      <if test="orgName != null ">
+        and org_name= #{orgName}
+      </if>
+      <if test="belongTo != null ">
+        and belong_to= #{belongTo}
+      </if>
+      <if test="orgType != null ">
+        and org_type= #{orgType}
+      </if>
+    </where>
+
+  </select>
+
+  <select id="selectById" resultType="com.mindskip.xzs.bean.Org">
+    select  * from t_org where uuid =#{id}
+  </select>
+
+
+  <select id="getAllParents" resultType="com.mindskip.xzs.bean.Org">
+    select  * from t_org where org_type='0'
+  </select>
+
+
+  <insert id="insert">
+    insert t_org (uuid,org_name,org_type,belong_to,belong_to_name,create_time)
+    value (#{uuid},#{orgName},#{orgType},#{belongTo},#{belongToName},#{createTime})
+  </insert>
+
+  <delete id="deleteById">
+    delete from t_org where uuid = #{id}
+  </delete>
+
+  <update id="updateById" >
+    update t_org set org_name=#{orgName},org_type=#{orgType},belong_to=#{belongTo},
+    belong_to_name=#{belongToName}
+    where uuid = #{uuid}
+  </update>
+
+
+  <select id="getOrgChildren"  resultType="com.mindskip.xzs.bean.Org">
+    select * from t_org
+    where uuid = #{uuid} or belong_to =#{uuid}
+  </select>
+
+  <select id="getOrgChildrenCount" resultType="java.lang.Integer" >
+    select count(1) from t_org
+    where uuid = #{uuid} or belong_to =#{uuid}
+  </select>
+</mapper>
