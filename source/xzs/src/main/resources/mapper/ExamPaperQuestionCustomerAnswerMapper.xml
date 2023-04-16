@@ -239,8 +239,8 @@
   </select>
 
 
-  <insert id="insertList" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id" >
-    insert into t_exam_paper_question_customer_answer ( question_id, question_score,
+  <insert id="insertList" parameterType="java.util.List"  >
+    insert into t_exam_paper_question_customer_answer ( id,question_id, question_score,
     subject_id, create_time, create_user,
     text_content_id, exam_paper_id, question_type,
     answer, customer_score, exam_paper_answer_id ,
@@ -248,7 +248,7 @@
     values
     <foreach collection="list" item="item" index="index"
              separator=",">
-      ( #{item.questionId,jdbcType=VARCHAR}, #{item.questionScore,jdbcType=INTEGER},
+      ( #{item.id,jdbcType=VARCHAR},#{item.questionId,jdbcType=VARCHAR}, #{item.questionScore,jdbcType=INTEGER},
       #{item.subjectId,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.createUser,jdbcType=VARCHAR},
       #{item.textContentId,jdbcType=VARCHAR}, #{item.examPaperId,jdbcType=VARCHAR}, #{item.questionType,jdbcType=INTEGER},
       #{item.answer,jdbcType=VARCHAR}, #{item.customerScore,jdbcType=INTEGER}, #{item.examPaperAnswerId,jdbcType=VARCHAR},

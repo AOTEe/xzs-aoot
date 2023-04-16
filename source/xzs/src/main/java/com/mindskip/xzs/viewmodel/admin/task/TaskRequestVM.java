@@ -13,11 +13,19 @@ public class TaskRequestVM {
 
     private String id;
 
-    @NotNull
+    //@NotNull
     private Integer gradeLevel;
 
     @NotNull
     private String title;
+
+    private String subjectId;
+
+    private String subjectName;
+
+    private String orgId;
+
+    private String orgName;
 
     @Size(min = 1, message = "请添加试卷")
     @Valid
@@ -45,6 +53,38 @@ public class TaskRequestVM {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 
     public List<ExamResponseVM> getPaperItems() {

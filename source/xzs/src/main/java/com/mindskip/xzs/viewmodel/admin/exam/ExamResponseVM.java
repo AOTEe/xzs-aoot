@@ -16,11 +16,13 @@ public class ExamResponseVM {
 
     private Integer createUser;
 
-    private Integer subjectId;
+    private String subjectId;
+
+    private String subjectName;
 
     private Integer paperType;
 
-    private Integer frameTextContentId;
+    private String frameTextContentId;
 
     public String getId() {
         return id;
@@ -70,12 +72,20 @@ public class ExamResponseVM {
         this.createUser = createUser;
     }
 
-    public Integer getSubjectId() {
+    public String getSubjectId() {
         return subjectId;
     }
 
-    public void setSubjectId(Integer subjectId) {
+    public void setSubjectId(String subjectId) {
         this.subjectId = subjectId;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public Integer getPaperType() {
@@ -86,11 +96,11 @@ public class ExamResponseVM {
         this.paperType = paperType;
     }
 
-    public Integer getFrameTextContentId() {
+    public String getFrameTextContentId() {
         return frameTextContentId;
     }
 
-    public void setFrameTextContentId(Integer frameTextContentId) {
+    public void setFrameTextContentId(String frameTextContentId) {
         this.frameTextContentId = frameTextContentId;
     }
 }

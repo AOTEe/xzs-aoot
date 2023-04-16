@@ -11,6 +11,8 @@
     <result column="sex" jdbcType="INTEGER" property="sex" />
     <result column="birth_day" jdbcType="TIMESTAMP" property="birthDay" />
     <result column="user_level" jdbcType="INTEGER" property="userLevel" />
+    <result column="org_id" jdbcType="VARCHAR" property="orgId" />
+    <result column="org_name" jdbcType="VARCHAR" property="orgName" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="role" jdbcType="INTEGER" property="role" />
     <result column="status" jdbcType="INTEGER" property="status" />
@@ -22,7 +24,7 @@
     <result column="wx_open_id" jdbcType="VARCHAR" property="wxOpenId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_uuid, user_name, password, real_name, age, sex, birth_day, user_level, phone,
+    id, user_uuid, user_name, password, real_name, age, sex, birth_day, user_level,org_id,org_name, phone,
     role, status, image_path, create_time, modify_time, last_active_time, deleted, wx_open_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -38,7 +40,7 @@
   <insert id="insert" parameterType="com.mindskip.xzs.domain.User" useGeneratedKeys="true" keyProperty="id">
     insert into t_user (id, user_uuid, user_name,
       password, real_name, age,
-      sex, birth_day, user_level,
+      sex, birth_day, user_level,org_id,org_name,
       phone, role, status,
       image_path, create_time, modify_time,
       last_active_time, deleted, wx_open_id
@@ -46,6 +48,7 @@
     values (#{id,jdbcType=VARCHAR}, #{userUuid,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
       #{password,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
       #{sex,jdbcType=INTEGER}, #{birthDay,jdbcType=TIMESTAMP}, #{userLevel,jdbcType=INTEGER},
+      #{orgId,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR},
       #{phone,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
       #{imagePath,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP},
       #{lastActiveTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, #{wxOpenId,jdbcType=VARCHAR}
@@ -80,6 +83,12 @@
       </if>
       <if test="userLevel != null">
         user_level,
+      </if>
+      <if test="orgId != null">
+        org_id,
+      </if>
+      <if test="orgName != null">
+        org_name,
       </if>
       <if test="phone != null">
         phone,
@@ -137,6 +146,12 @@
       <if test="userLevel != null">
         #{userLevel,jdbcType=INTEGER},
       </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null">
+        #{orgName,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
       </if>
@@ -193,6 +208,12 @@
       <if test="userLevel != null">
         user_level = #{userLevel,jdbcType=INTEGER},
       </if>
+      <if test="orgId != null">
+        user_id = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null">
+        user_name = #{orgName,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
       </if>
@@ -233,6 +254,8 @@
       sex = #{sex,jdbcType=INTEGER},
       birth_day = #{birthDay,jdbcType=TIMESTAMP},
       user_level = #{userLevel,jdbcType=INTEGER},
+      org_id = #{orgId,jdbcType=VARCHAR},
+      org_name = #{orgName,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       role = #{role,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},

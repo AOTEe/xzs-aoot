@@ -166,7 +166,7 @@
   </select>
 
 
-  <select id="unReadCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+  <select id="unReadCount" resultType="java.lang.Integer" parameterType="java.lang.String">
     select count(*)
     from t_message_user
     where  readed='f' and  receive_user_id = #{userId}

@@ -20,6 +20,52 @@ public class TaskExam implements Serializable {
     private Integer gradeLevel;
 
     /**
+     * 学科
+     */
+    private String subjectId;
+
+    private String subjectName;
+
+    /**
+     *  班级
+     */
+    private String orgId;
+
+    private String orgName;
+
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+    /**
      * 任务框架 内容为JSON
      */
     private String frameTextContentId;

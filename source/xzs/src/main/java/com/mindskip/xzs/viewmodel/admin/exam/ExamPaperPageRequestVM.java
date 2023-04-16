@@ -7,7 +7,8 @@ import com.mindskip.xzs.base.BasePage;
 public class ExamPaperPageRequestVM extends BasePage {
 
     private String id;
-    private Integer subjectId;
+    private String subjectId;
+    private String subjectName;
     private Integer level;
     private Integer paperType;
     private Integer taskExamId;
@@ -20,12 +21,20 @@ public class ExamPaperPageRequestVM extends BasePage {
         this.id = id;
     }
 
-    public Integer getSubjectId() {
+    public String getSubjectId() {
         return subjectId;
     }
 
-    public void setSubjectId(Integer subjectId) {
+    public void setSubjectId(String subjectId) {
         this.subjectId = subjectId;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public Integer getLevel() {

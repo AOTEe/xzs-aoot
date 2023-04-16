@@ -5,6 +5,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="subject_id" jdbcType="VARCHAR" property="subjectId" />
+    <result column="subject_name" jdbcType="VARCHAR" property="subjectName" />
     <result column="paper_type" jdbcType="INTEGER" property="paperType" />
     <result column="grade_level" jdbcType="INTEGER" property="gradeLevel" />
     <result column="score" jdbcType="INTEGER" property="score" />
@@ -19,7 +20,7 @@
     <result column="task_exam_id" jdbcType="VARCHAR" property="taskExamId" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, subject_id, paper_type, grade_level, score, question_count, suggest_time,
+    id, name, subject_id, subject_name, paper_type, grade_level, score, question_count, suggest_time,
     limit_start_time, limit_end_time, frame_text_content_id, create_user, create_time,
     deleted, task_exam_id
   </sql>
@@ -58,6 +59,9 @@
       </if>
       <if test="subjectId != null">
         subject_id,
+      </if>
+      <if test="subjectName != null">
+        subject_name,
       </if>
       <if test="paperType != null">
         paper_type,
@@ -106,6 +110,9 @@
       <if test="subjectId != null">
         #{subjectId,jdbcType=VARCHAR},
       </if>
+      <if test="subjectName != null">
+        #{subjectName,jdbcType=VARCHAR},
+      </if>
       <if test="paperType != null">
         #{paperType,jdbcType=INTEGER},
       </if>
@@ -152,6 +159,9 @@
       </if>
       <if test="subjectId != null">
         subject_id = #{subjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectName != null">
+        subject_name = #{subjectName,jdbcType=VARCHAR},
       </if>
       <if test="paperType != null">
         paper_type = #{paperType,jdbcType=INTEGER},
@@ -241,6 +251,9 @@
       <if test="subjectId != null ">
         and subject_id= #{subjectId}
       </if>
+      <if test="subjectName != null ">
+        and subject_name= #{subjectName}
+      </if>
       <if test="paperType != null ">
         and paper_type= #{paperType}
       </if>
@@ -258,7 +271,9 @@
     <where>
       and deleted=0
       and task_exam_id is null
-      and grade_level= #{level}
+      <if test="subjectId != null ">
+        and subject_id=#{subjectId}
+      </if>
       and paper_type=#{paperType}
     </where>
   </select>

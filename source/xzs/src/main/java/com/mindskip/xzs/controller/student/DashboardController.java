@@ -74,7 +74,8 @@ public class DashboardController extends BaseApiController {
     @RequestMapping(value = "/task", method = RequestMethod.POST)
     public RestResponse<List<TaskItemVm>> task() {
         User user = getCurrentUser();
-        List<TaskExam> taskExams = taskExamService.getByGradeLevel(user.getUserLevel());
+        //根据年级获取任务试卷==修改为==》根据班级,任务的发布以班级为单位
+        List<TaskExam> taskExams = taskExamService.getByOrgId(user.getOrgId());
         if (taskExams.size() == 0) {
             return RestResponse.ok(new ArrayList<>());
         }

@@ -7,7 +7,7 @@
 <!--        </el-select>-->
 <!--      </el-form-item>-->
       <el-form-item label="学科：" prop="subjectId" required>
-        <el-select v-model="form.subjectId" placeholder="学科">
+        <el-select v-model="form.subjectId" placeholder="学科" @change="changeSubject(form.subjectId)">
           <el-option v-for="item in subjectFilter" :key="item.id" :value="item.id"
                      :label="item.name"></el-option>
         </el-select>
@@ -31,6 +31,16 @@
           添加题目
         </el-button>
         <el-button type="text" class="link-left" size="mini" @click="form.titleItems.splice(index,1)">删除</el-button>
+        <div class="demo-input-suffix">
+          题型：
+          <el-select v-model="titleItem.questionType" style="width: 20%" clearable>
+            <el-option v-for="item in questionTypeEnum" :key="item.key" :value="item.key" :label="item.value"></el-option>
+          </el-select>
+        </div>
+        <div class="demo-input-suffix">
+          分数：
+          <el-input v-model="titleItem.score" type="number" style="width: 20%"/>
+        </div>
         <el-card class="exampaper-item-box" v-if="titleItem.questionItems.length!==0">
           <el-form-item :key="questionIndex" :label="'题目'+(questionIndex+1)+'：'"
                         v-for="(questionItem,questionIndex) in titleItem.questionItems" style="margin-bottom: 15px">
@@ -101,8 +111,8 @@ export default {
     return {
       form: {
         id: null,
-        //level: null,
         subjectId: null,
+        subjectName: null,
         paperType: 1,
         limitDateTime: [],
         name: '',
@@ -186,8 +196,18 @@ export default {
     addTitle () {
       this.form.titleItems.push({
         name: '',
+        questionType: null,
+        score: null,
         questionItems: []
       })
+    },
+    changeSubject (subjectId) {
+      for (let i = 0; i < this.subjectFilter.length; i++) {
+        if (subjectId == this.subjectFilter[i].id) {
+          this.form.subjectName = this.subjectFilter[i].name
+          console.log(this.subjectFilter[i])
+        }
+      }
     },
     addQuestion (titleItem) {
       this.currentTitleItem = titleItem
@@ -244,6 +264,7 @@ export default {
         id: null,
         level: null,
         subjectId: null,
+        subjectName: null,
         paperType: 1,
         limitDateTime: [],
         name: '',

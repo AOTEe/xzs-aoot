@@ -19,6 +19,8 @@ public class ExamPaper implements Serializable {
      */
     private String subjectId;
 
+    private String subjectName;
+
     /**
      * 试卷类型( 1固定试卷 4.时段试卷 6.任务试卷)
      */
@@ -89,6 +91,14 @@ public class ExamPaper implements Serializable {
 
     public void setSubjectId(String subjectId) {
         this.subjectId = subjectId;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public Integer getPaperType() {

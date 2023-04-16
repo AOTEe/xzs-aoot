@@ -13,6 +13,7 @@ import com.mindskip.xzs.service.enums.ActionEnum;
 import com.mindskip.xzs.utility.DateTimeUtil;
 import com.mindskip.xzs.utility.JsonUtil;
 import com.mindskip.xzs.utility.ModelMapperSingle;
+import com.mindskip.xzs.utility.SnowFlakeGenerateIDUtil;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamResponseVM;
 import com.mindskip.xzs.viewmodel.admin.task.TaskPageRequestVM;
 import com.mindskip.xzs.viewmodel.admin.task.TaskRequestVM;
@@ -58,6 +59,7 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
         if (actionEnum == ActionEnum.ADD) {
             Date now = new Date();
             taskExam = modelMapper.map(model, TaskExam.class);
+            taskExam.setId(new SnowFlakeGenerateIDUtil().generateID());
             taskExam.setCreateUser(user.getId());
             taskExam.setCreateUserName(user.getUserName());
             taskExam.setCreateTime(now);
@@ -70,6 +72,7 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
                 taskItemObject.setExamPaperName(p.getName());
                 return taskItemObject;
             });
+            textContent.setId(new SnowFlakeGenerateIDUtil().generateID());
             textContentService.insertByFilter(textContent);
             taskExam.setFrameTextContentId(textContent.getId());
             taskExamMapper.insertSelective(taskExam);
@@ -121,5 +124,9 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
     @Override
     public List<TaskExam> getByGradeLevel(Integer gradeLevel) {
         return taskExamMapper.getByGradeLevel(gradeLevel);
+    }
+    @Override
+    public List<TaskExam> getByOrgId(String orgId){
+        return taskExamMapper.getByOrgId(orgId);
     }
 }

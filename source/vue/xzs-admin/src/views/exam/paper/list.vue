@@ -32,8 +32,8 @@
       </el-form-item>
     </el-form>
     <el-table v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%">
-      <el-table-column prop="id" label="Id" width="90px"/>
-      <el-table-column prop="subjectId" label="学科" :formatter="subjectFormatter" width="120px" />
+      <el-table-column prop="id" label="Id" v-if="false" width="90px"/>
+      <el-table-column prop="subjectName" label="学科"  width="120px" />
       <el-table-column prop="name" label="名称"  />
       <el-table-column prop="createTime" label="创建时间" width="160px"/>
       <el-table-column  label="操作" align="center"  width="160px">
@@ -59,8 +59,8 @@ export default {
     return {
       queryParam: {
         id: null,
-        level: null,
         subjectId: null,
+        subjectName: null,
         pageIndex: 1,
         pageSize: 10
       },
@@ -78,9 +78,6 @@ export default {
     submitForm () {
       this.queryParam.pageIndex = 1
       this.search()
-    },
-    formPaper(){
-
     },
     search () {
       this.listLoading = true

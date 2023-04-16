@@ -11,10 +11,12 @@ import java.util.List;
 
 public class ExamPaperEditRequestVM {
     private String id;
-    @NotNull
+    //@NotNull
     private Integer level;
     @NotNull
     private String subjectId;
+    @NotNull
+    private String subjectName;
     @NotNull
     private Integer paperType;
     @NotBlank
@@ -52,6 +54,14 @@ public class ExamPaperEditRequestVM {
 
     public void setSubjectId(String subjectId) {
         this.subjectId = subjectId;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public Integer getPaperType() {

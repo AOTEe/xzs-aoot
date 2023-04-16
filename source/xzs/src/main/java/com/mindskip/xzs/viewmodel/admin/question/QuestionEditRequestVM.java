@@ -26,7 +26,7 @@ public class QuestionEditRequestVM {
 
     @Valid
     private List<QuestionEditItemVM> items;
-    @NotBlank
+    //@NotBlank
     private String analyze;
 
     private List<String> correctArray;

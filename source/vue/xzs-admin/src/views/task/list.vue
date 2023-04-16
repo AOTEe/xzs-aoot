@@ -12,9 +12,9 @@
     </el-form>
 
     <el-table v-loading="listLoading" :data="tableData" border fit highlight-current-row style="width: 100%">
-      <el-table-column prop="id" label="Id"  width="100" />
+      <el-table-column prop="id" v-if="false" label="Id"  width="100" />
       <el-table-column prop="title" label="标题" />
-      <el-table-column prop="gradeLevel" label="学级"  :formatter="levelFormatter"/>
+      <el-table-column prop="subjectName" label="学科" />
       <el-table-column prop="createUserName" label="发送人"  width="100" />
       <el-table-column prop="createTime" label="创建时间" width="160px"/>
       <el-table-column  label="操作" align="center"  width="160px">

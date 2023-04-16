@@ -13,10 +13,7 @@ import com.mindskip.xzs.service.QuestionService;
 import com.mindskip.xzs.service.SubjectService;
 import com.mindskip.xzs.service.TextContentService;
 import com.mindskip.xzs.service.enums.ActionEnum;
-import com.mindskip.xzs.utility.DateTimeUtil;
-import com.mindskip.xzs.utility.JsonUtil;
-import com.mindskip.xzs.utility.ModelMapperSingle;
-import com.mindskip.xzs.utility.ExamUtil;
+import com.mindskip.xzs.utility.*;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperPageRequestVM;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperTitleItemVM;
@@ -93,7 +90,9 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         if (actionEnum == ActionEnum.ADD) {
             examPaper = modelMapper.map(examPaperEditRequestVM, ExamPaper.class);
             TextContent frameTextContent = new TextContent(frameTextContentStr, now);
+            frameTextContent.setId(new SnowFlakeGenerateIDUtil().generateID());
             textContentService.insertByFilter(frameTextContent);
+            examPaper.setId(new SnowFlakeGenerateIDUtil().generateID());
             examPaper.setFrameTextContentId(frameTextContent.getId());
             examPaper.setCreateTime(now);
             examPaper.setCreateUser(user.getId());

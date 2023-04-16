@@ -2,7 +2,6 @@ package com.mindskip.xzs.viewmodel.admin.task;
 
 
 
-import java.util.Date;
 
 
 public class TaskPageResponseVM {
@@ -13,11 +12,51 @@ public class TaskPageResponseVM {
 
     private Integer gradeLevel;
 
+    private String subjectId;
+
+    private String subjectName;
+
+    private String orgId;
+
+    private String orgName;
+
     private String createUserName;
 
     private String createTime;
 
     private Boolean deleted;
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
 
     public String getId() {
         return id;

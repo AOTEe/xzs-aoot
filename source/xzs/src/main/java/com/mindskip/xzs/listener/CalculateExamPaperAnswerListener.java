@@ -8,6 +8,7 @@ import com.mindskip.xzs.service.ExamPaperAnswerService;
 import com.mindskip.xzs.service.ExamPaperQuestionCustomerAnswerService;
 import com.mindskip.xzs.service.TaskExamCustomerAnswerService;
 import com.mindskip.xzs.service.TextContentService;
+import com.mindskip.xzs.utility.SnowFlakeGenerateIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -55,6 +56,7 @@ public class CalculateExamPaperAnswerListener implements ApplicationListener<Cal
         ExamPaperAnswerInfo examPaperAnswerInfo = (ExamPaperAnswerInfo) calculateExamPaperAnswerCompleteEvent.getSource();
         ExamPaper examPaper = examPaperAnswerInfo.getExamPaper();
         ExamPaperAnswer examPaperAnswer = examPaperAnswerInfo.getExamPaperAnswer();
+        examPaperAnswer.setId(new SnowFlakeGenerateIDUtil().generateID());
         List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers = examPaperAnswerInfo.getExamPaperQuestionCustomerAnswers();
 
         examPaperAnswerService.insertByFilter(examPaperAnswer);
@@ -65,6 +67,7 @@ public class CalculateExamPaperAnswerListener implements ApplicationListener<Cal
             d.setAnswer(null);
         });
         examPaperQuestionCustomerAnswers.forEach(d -> {
+            d.setId(new SnowFlakeGenerateIDUtil().generateID());
             d.setExamPaperAnswerId(examPaperAnswer.getId());
         });
         examPaperQuestionCustomerAnswerService.insertList(examPaperQuestionCustomerAnswers);

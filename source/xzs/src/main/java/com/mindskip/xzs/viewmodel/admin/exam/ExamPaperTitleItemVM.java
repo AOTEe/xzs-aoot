@@ -14,6 +14,10 @@ public class ExamPaperTitleItemVM {
     @NotBlank(message = "标题内容不能为空")
     private String name;
 
+    private Integer questionType;
+
+    private Integer score;
+
     @Size(min = 1,message = "请添加题目")
     @Valid
     private List<QuestionEditRequestVM> questionItems;
@@ -24,6 +28,22 @@ public class ExamPaperTitleItemVM {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(Integer questionType) {
+        this.questionType = questionType;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
     public List<QuestionEditRequestVM> getQuestionItems() {

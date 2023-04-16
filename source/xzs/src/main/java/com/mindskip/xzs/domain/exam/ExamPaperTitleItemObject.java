@@ -7,6 +7,10 @@ public class ExamPaperTitleItemObject {
 
     private String name;
 
+    private Integer questionType;
+
+    private Integer score;
+
     private List<ExamPaperQuestionItemObject> questionItems;
 
     public String getName() {
@@ -15,6 +19,22 @@ public class ExamPaperTitleItemObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(Integer questionType) {
+        this.questionType = questionType;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
     public List<ExamPaperQuestionItemObject> getQuestionItems() {

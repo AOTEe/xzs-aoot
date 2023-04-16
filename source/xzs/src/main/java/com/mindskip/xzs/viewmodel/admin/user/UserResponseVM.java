@@ -35,6 +35,10 @@ public class UserResponseVM extends BaseVM {
 
     private Integer userLevel;
 
+    private String orgId;
+
+    private String orgName;
+
     private String imagePath;
 
     public static UserResponseVM from(User user) {
@@ -44,6 +48,22 @@ public class UserResponseVM extends BaseVM {
         vm.setCreateTime(DateTimeUtil.dateFormat(user.getCreateTime()));
         vm.setModifyTime(DateTimeUtil.dateFormat(user.getModifyTime()));
         return vm;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 
     public String getId() {
