@@ -9,6 +9,7 @@ import com.mindskip.xzs.repository.TaskExamCustomerAnswerMapper;
 import com.mindskip.xzs.service.TaskExamCustomerAnswerService;
 import com.mindskip.xzs.service.TextContentService;
 import com.mindskip.xzs.utility.JsonUtil;
+import com.mindskip.xzs.utility.SnowFlakeGenerateIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,8 +42,10 @@ public class TaskExamCustomerAnswerImpl extends BaseServiceImpl<TaskExamCustomer
             taskExamCustomerAnswer.setTaskExamId(taskId);
             List<TaskItemAnswerObject> taskItemAnswerObjects = Arrays.asList(new TaskItemAnswerObject(examPaperAnswer.getExamPaperId(), examPaperAnswer.getId(), examPaperAnswer.getStatus()));
             TextContent textContent = textContentService.jsonConvertInsert(taskItemAnswerObjects, now, null);
+            textContent.setId(new SnowFlakeGenerateIDUtil().generateID());
             textContentService.insertByFilter(textContent);
             taskExamCustomerAnswer.setTextContentId(textContent.getId());
+            taskExamCustomerAnswer.setId(new SnowFlakeGenerateIDUtil().generateID());
             insertByFilter(taskExamCustomerAnswer);
         } else {
             TextContent textContent = textContentService.selectById(taskExamCustomerAnswer.getTextContentId());
