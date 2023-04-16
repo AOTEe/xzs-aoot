@@ -66,10 +66,18 @@ public class CalculateExamPaperAnswerListener implements ApplicationListener<Cal
             d.setTextContentId(textContent.getId());
             d.setAnswer(null);
         });
-        examPaperQuestionCustomerAnswers.forEach(d -> {
-            d.setId(new SnowFlakeGenerateIDUtil().generateID());
-            d.setExamPaperAnswerId(examPaperAnswer.getId());
-        });
+        for (ExamPaperQuestionCustomerAnswer item : examPaperQuestionCustomerAnswers) {
+            try {
+                //这ID生成的方法有bug，时间间隔太短，ID会复用
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            String id = new SnowFlakeGenerateIDUtil().generateID();
+            item.setId(id);
+
+            item.setExamPaperAnswerId(examPaperAnswer.getId());
+        }
         examPaperQuestionCustomerAnswerService.insertList(examPaperQuestionCustomerAnswers);
 
         switch (ExamPaperTypeEnum.fromCode(examPaper.getPaperType())) {
