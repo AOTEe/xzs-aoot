@@ -38,7 +38,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     }
 
     @Override
-    public User getUserById(Integer id) {
+    public User getUserById(String id) {
         return userMapper.getUserById(id);
     }
 

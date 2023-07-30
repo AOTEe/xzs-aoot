@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mindskip.xzs.messagecenter.repository.RecordMapper">
+  <resultMap id="BaseResultMap" type="com.mindskip.xzs.messagecenter.bean.Record">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="chat_id" jdbcType="VARCHAR" property="chatId" />
+    <result column="msg_type" jdbcType="VARCHAR" property="msgType" />
+    <result column="sender_id" jdbcType="INTEGER" property="senderId" />
+    <result column="send_name" jdbcType="VARCHAR" property="sendName" />
+    <result column="sender_photo" jdbcType="INTEGER" property="senderPhoto" />
+    <result column="receiver_id" jdbcType="INTEGER" property="receiverId" />
+    <result column="receiver_name" jdbcType="INTEGER" property="receiverName" />
+    <result column="receiver_photo" jdbcType="INTEGER" property="receiverPhoto" />
+    <result column="mag_status" jdbcType="INTEGER" property="magStatus" />
+    <result column="msg_content" jdbcType="INTEGER" property="msgContent" />
+    <result column="msg_file_path" jdbcType="INTEGER" property="msgFilePath" />
+    <result column="msg_file_size" jdbcType="VARCHAR" property="msgFileSize" />
+    <result column="msg_time" jdbcType="TIMESTAMP" property="msgTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, chat_id, msg_type, sender_id, send_name, sender_photo, receiver_id,
+    receiver_name, receiver_photo, mag_status, msg_content, msg_file_path, msg_file_size, msg_time
+  </sql>
+
+  <insert id="post" parameterType="com.mindskip.xzs.messagecenter.bean.Record"  keyProperty="id">
+    insert into t_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="chatId != null">
+        chat_id,
+      </if>
+      <if test="msgType != null">
+        msg_type,
+      </if>
+      <if test="senderId != null">
+        sender_id,
+      </if>
+      <if test="senderName != null">
+        sender_name,
+      </if>
+      <if test="senderPhoto != null">
+        sender_photo,
+      </if>
+      <if test="receiverId != null">
+        receiver_id,
+      </if>
+      <if test="receiverName != null">
+        receiver_name,
+      </if>
+      <if test="receiverPhoto != null">
+        receiver_photo,
+      </if>
+      <if test="msgStatus != null">
+        msg_status,
+      </if>
+      <if test="msgContent != null">
+        msg_content,
+      </if>
+      <if test="msgFilePath != null">
+        msg_file_path,
+      </if>
+      <if test="msgFIleSize != null">
+        msg_fIle_size,
+      </if>
+      <if test="msgTime != null">
+        msg_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="chatId != null">
+        #{chatId,jdbcType=VARCHAR},
+      </if>
+      <if test="msgType != null">
+        #{msgType,jdbcType=VARCHAR},
+      </if>
+      <if test="senderId != null">
+        #{senderId,jdbcType=VARCHAR},
+      </if>
+      <if test="senderName != null">
+        #{senderName,jdbcType=VARCHAR},
+      </if>
+      <if test="senderPhoto != null">
+        #{senderPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverId != null">
+        #{receiverId,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverName != null">
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhoto != null">
+        #{receiverPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="msgStatus != null">
+        #{msgStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="msgContent != null">
+        #{msgContent,jdbcType=VARCHAR},
+      </if>
+      <if test="msgFilePath != null">
+        #{msgFilePath,jdbcType=VARCHAR},
+      </if>
+      <if test="msgFileSize != null">
+        #{msgFileSize,jdbcType=VARCHAR},
+      </if>
+      <if test="msgTime != null">
+        #{msgTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="getRecordsByBothSideId" resultMap="BaseResultMap">
+    SELECT * FROM `t_record` WHERE
+    (sender_id = #{myId} and receiver_id = #{oppositeId})
+    or
+    (sender_id = #{oppositeId} and receiver_id = #{myId})
+    ORDER BY msg_time desc
+  </select>
+
+
+  <select id="getRecordsCountByBothSideId" resultType="java.lang.Integer">
+    SELECT count(*) FROM `t_record` WHERE
+    (sender_id = #{myId} and receiver_id = #{oppositeId})
+    or
+    (sender_id = #{oppositeId} and receiver_id = #{myId})
+  </select>
+
+  <select id="getLastRecordByBothSideId" resultMap="BaseResultMap">
+    SELECT * FROM `t_record` WHERE
+    (sender_id = #{myId} and receiver_id = #{oppositeId})
+    or
+    (sender_id = #{oppositeId} and receiver_id = #{myId})
+    ORDER BY msg_time desc LIMIT 0,1
+  </select>
+
+  <select id="getUnReadCountByBothSideId" resultType="java.lang.Integer">
+    SELECT count(*) FROM `t_record` WHERE
+    (sender_id = #{oppositeId} and receiver_id = #{myId})
+    and   msg_status = '0'
+  </select>
+
+  <select id="getUnReadCountAll" resultType="java.lang.Integer">
+    SELECT count(*) FROM `t_record` WHERE
+    receiver_id = #{myId}
+    and   msg_status = '0'
+  </select>
+
+
+</mapper>

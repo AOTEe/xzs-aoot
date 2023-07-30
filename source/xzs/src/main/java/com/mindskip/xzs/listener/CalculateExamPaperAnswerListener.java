@@ -52,7 +52,7 @@ public class CalculateExamPaperAnswerListener implements ApplicationListener<Cal
     @Transactional
     public void onApplicationEvent(CalculateExamPaperAnswerCompleteEvent calculateExamPaperAnswerCompleteEvent) {
         Date now = new Date();
-
+        //做examPaperAnswer、examPaperQuestionAnswers的插入操作
         ExamPaperAnswerInfo examPaperAnswerInfo = (ExamPaperAnswerInfo) calculateExamPaperAnswerCompleteEvent.getSource();
         ExamPaper examPaper = examPaperAnswerInfo.getExamPaper();
         ExamPaperAnswer examPaperAnswer = examPaperAnswerInfo.getExamPaperAnswer();
@@ -62,6 +62,7 @@ public class CalculateExamPaperAnswerListener implements ApplicationListener<Cal
         examPaperAnswerService.insertByFilter(examPaperAnswer);
         examPaperQuestionCustomerAnswers.stream().filter(a -> QuestionTypeEnum.needSaveTextContent(a.getQuestionType())).forEach(d -> {
             TextContent textContent = new TextContent(d.getAnswer(), now);
+            textContent.setId(new SnowFlakeGenerateIDUtil().generateID());
             textContentService.insertByFilter(textContent);
             d.setTextContentId(textContent.getId());
             d.setAnswer(null);

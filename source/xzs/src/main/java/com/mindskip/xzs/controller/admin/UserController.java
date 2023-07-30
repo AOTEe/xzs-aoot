@@ -59,7 +59,7 @@ public class UserController extends BaseApiController {
     }
 
     @RequestMapping(value = "/select/{id}", method = RequestMethod.POST)
-    public RestResponse<UserResponseVM> select(@PathVariable Integer id) {
+    public RestResponse<UserResponseVM> select(@PathVariable String id) {
         User user = userService.getUserById(id);
         UserResponseVM userVm = UserResponseVM.from(user);
         return RestResponse.ok(userVm);
@@ -121,7 +121,7 @@ public class UserController extends BaseApiController {
 
 
     @RequestMapping(value = "/changeStatus/{id}", method = RequestMethod.POST)
-    public RestResponse<Integer> changeStatus(@PathVariable Integer id) {
+    public RestResponse<Integer> changeStatus(@PathVariable String id) {
         User user = userService.getUserById(id);
         UserStatusEnum userStatusEnum = UserStatusEnum.fromCode(user.getStatus());
         Integer newStatus = userStatusEnum == UserStatusEnum.Enable ? UserStatusEnum.Disable.getCode() : UserStatusEnum.Enable.getCode();
@@ -133,7 +133,7 @@ public class UserController extends BaseApiController {
 
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public RestResponse delete(@PathVariable Integer id) {
+    public RestResponse delete(@PathVariable String id) {
         User user = userService.getUserById(id);
         user.setDeleted(true);
         userService.updateByIdFilter(user);

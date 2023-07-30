@@ -50,4 +50,10 @@ public interface ExamPaperAnswerService extends BaseService<ExamPaperAnswer> {
     List<Integer> selectMothCount();
 
     PageInfo<ExamPaperAnswer> adminPage(com.mindskip.xzs.viewmodel.admin.paper.ExamPaperAnswerPageRequestVM requestVM);
+
+    /**
+     * 计算试卷提交结果后,做入库操作
+     * @param examPaperAnswerInfo
+     */
+    void insertExamPaperAnswer(ExamPaperAnswerInfo examPaperAnswerInfo);
 }

@@ -33,6 +33,18 @@ const router = new Router({
       ]
     },
     {
+      path: '/message',
+      component: Layout,
+      children: [
+        {
+          path: 'index',
+          component: () => import('@/views/message-center/index'),
+          name: 'MessageIndex',
+          meta: { title: '消息中心' }
+        }
+      ]
+    },
+    {
       path: '/record',
       component: Layout,
       children: [

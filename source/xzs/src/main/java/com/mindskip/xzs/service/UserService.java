@@ -23,7 +23,7 @@ public interface UserService extends BaseService<User> {
      * @param id id
      * @return User
      */
-    User getUserById(Integer id);
+    User getUserById(String id);
 
     /**
      * getUserByUserName

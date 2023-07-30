@@ -99,8 +99,20 @@ const form = function (url, params) {
   return request(false, query)
 }
 
+const postParam = function (url, params) {
+  const query = {
+    url: url,
+    method: 'post',
+    withCredentials: true,
+    timeout: 30000,
+    data: params,
+    headers: { 'Content-Type': 'multipart/form-data'}
+  }
+  return request(false, query)
+}
 export {
   post,
+  postParam,
   postWithLoadTip,
   postWithOutLoadTip,
   get,

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mindskip.xzs.messagecenter.repository.RecentChatsMapper">
+  <resultMap id="BaseResultMap" type="com.mindskip.xzs.messagecenter.bean.RecentChats">
+    <id column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="recent_chats" jdbcType="VARCHAR" property="recentChats" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, chat_id, msg_type, sender_id, send_name, sender_photo, receiver_id,
+    receiver_name, receiver_photo, mag_status, msg_content, msg_file_path, msg_file_size, msg_time
+  </sql>
+
+  <insert id="add" parameterType="com.mindskip.xzs.messagecenter.bean.RecentChats"  keyProperty="useId">
+    insert into t_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="recentChats != null">
+        recent_chats,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{user_id,jdbcType=VARCHAR},
+      </if>
+      <if test="recentChats != null">
+        #{recent_chats,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="update">
+    update t_recent_chats set recent_chats = #{recent_chats} where user_id = #{use_id}
+  </update>
+
+  <select id="get" resultMap="BaseResultMap">
+    select * from   t_recent_chats where user_id = #{use_id}
+  </select>
+
+</mapper>

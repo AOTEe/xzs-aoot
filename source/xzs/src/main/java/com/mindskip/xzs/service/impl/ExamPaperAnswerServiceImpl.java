@@ -15,10 +15,12 @@ import com.mindskip.xzs.repository.QuestionMapper;
 import com.mindskip.xzs.repository.TaskExamCustomerAnswerMapper;
 import com.mindskip.xzs.service.ExamPaperAnswerService;
 import com.mindskip.xzs.service.ExamPaperQuestionCustomerAnswerService;
+import com.mindskip.xzs.service.TaskExamCustomerAnswerService;
 import com.mindskip.xzs.service.TextContentService;
 import com.mindskip.xzs.utility.DateTimeUtil;
 import com.mindskip.xzs.utility.ExamUtil;
 import com.mindskip.xzs.utility.JsonUtil;
+import com.mindskip.xzs.utility.SnowFlakeGenerateIDUtil;
 import com.mindskip.xzs.viewmodel.student.exam.ExamPaperSubmitItemVM;
 import com.mindskip.xzs.viewmodel.student.exam.ExamPaperSubmitVM;
 import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageVM;
@@ -43,9 +45,16 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
     private final QuestionMapper questionMapper;
     private final ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService;
     private final TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper;
+    private final TaskExamCustomerAnswerService taskExamCustomerAnswerService;
 
     @Autowired
-    public ExamPaperAnswerServiceImpl(ExamPaperAnswerMapper examPaperAnswerMapper, ExamPaperMapper examPaperMapper, TextContentService textContentService, QuestionMapper questionMapper, ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService, TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper) {
+    public ExamPaperAnswerServiceImpl(ExamPaperAnswerMapper examPaperAnswerMapper,
+                                      ExamPaperMapper examPaperMapper,
+                                      TextContentService textContentService,
+                                      QuestionMapper questionMapper,
+                                      ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService,
+                                      TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper,
+                                      TaskExamCustomerAnswerService taskExamCustomerAnswerService) {
         super(examPaperAnswerMapper);
         this.examPaperAnswerMapper = examPaperAnswerMapper;
         this.examPaperMapper = examPaperMapper;
@@ -53,6 +62,7 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         this.questionMapper = questionMapper;
         this.examPaperQuestionCustomerAnswerService = examPaperQuestionCustomerAnswerService;
         this.taskExamCustomerAnswerMapper = taskExamCustomerAnswerMapper;
+        this.taskExamCustomerAnswerService = taskExamCustomerAnswerService;
     }
 
     @Override
@@ -62,6 +72,12 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
     }
 
 
+    /**
+     * 计算试卷分数
+     * @param examPaperSubmitVM
+     * @param user
+     * @return
+     */
     @Override
     public ExamPaperAnswerInfo calculateExamPaperAnswer(ExamPaperSubmitVM examPaperSubmitVM, User user) {
         ExamPaperAnswerInfo examPaperAnswerInfo = new ExamPaperAnswerInfo();
@@ -275,4 +291,47 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
                 examPaperAnswerMapper.adminPage(requestVM));
     }
+
+
+    @Override
+    public void insertExamPaperAnswer(ExamPaperAnswerInfo examPaperAnswerInfo){
+        //这里取当前时间不太合理,暂时先这么处理
+        Date now = new Date();
+        ExamPaper examPaper = examPaperAnswerInfo.getExamPaper();
+        ExamPaperAnswer examPaperAnswer = examPaperAnswerInfo.getExamPaperAnswer();
+        examPaperAnswer.setId(new SnowFlakeGenerateIDUtil().generateID());
+        List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers = examPaperAnswerInfo.getExamPaperQuestionCustomerAnswers();
+
+        this.insertByFilter(examPaperAnswer);
+        examPaperQuestionCustomerAnswers.stream().filter(a -> QuestionTypeEnum.needSaveTextContent(a.getQuestionType())).forEach(d -> {
+            TextContent textContent = new TextContent(d.getAnswer(), now);
+            textContent.setId(new SnowFlakeGenerateIDUtil().generateID());
+            textContentService.insertByFilter(textContent);
+            d.setTextContentId(textContent.getId());
+            d.setAnswer(null);
+        });
+        for (ExamPaperQuestionCustomerAnswer item : examPaperQuestionCustomerAnswers) {
+            try {
+                //这ID生成的方法有bug，时间间隔太短，ID会复用
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            String id = new SnowFlakeGenerateIDUtil().generateID();
+            item.setId(id);
+
+            item.setExamPaperAnswerId(examPaperAnswer.getId());
+        }
+        examPaperQuestionCustomerAnswerService.insertList(examPaperQuestionCustomerAnswers);
+
+        switch (ExamPaperTypeEnum.fromCode(examPaper.getPaperType())) {
+            case Task: {
+                taskExamCustomerAnswerService.insertOrUpdate(examPaper, examPaperAnswer, now);
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
 }
