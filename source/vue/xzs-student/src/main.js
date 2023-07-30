@@ -10,6 +10,10 @@ import '@/styles/index.scss' // global css
 import './icons' // icon
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
+import axios from 'axios'
+
+
+Vue.prototype.$axios = axios
 
 Vue.use(Element, {
   size: 'medium' // set element-ui default size
@@ -51,5 +55,8 @@ Vue.prototype.$$router = router
 new Vue({
   router: router,
   store: store,
+  beforeCreate() {
+    Vue.prototype.$bus = this //安装全局事件总线，$bus就是当前应用的vm
+  },
   render: h => h(App)
 }).$mount('#app')
