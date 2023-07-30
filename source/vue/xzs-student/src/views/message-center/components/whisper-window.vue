@@ -313,27 +313,29 @@ export default {
       this.websocketsend("sdfsdf")
 
     },
-    created() {
-
-    },
-    beforeMount() {
-      this.initWebSocket();
-    },
-    destroyed() {
-      //离开路由之后断开 websocket 连接
-      this.messageSocket.close();
-    }
-    ,
-    mounted() {
-      //全局总线事件接受,聊天对象信息
-      this.$on('concrete-whisper', (data) => {
-        console.log("接收到数据...")
-        console.log(data)
-        // this.whisperUID = data.oppositeUserId;
-        // this.whisperName = data.oppositeUserName;
-        // this.whisperAvatar = data.oppositeUserPhoto;
-      });
-    }
+  },
+  created() {
+    console.log("created...")
+  },
+  beforeMount() {
+    console.log("beforeMount...")
+    this.initWebSocket();
+  },
+  destroyed() {
+    //离开路由之后断开 websocket 连接
+    this.messageSocket.close();
+  }
+  ,
+  mounted() {
+    console.log("mounted...")
+    //全局总线事件接受,聊天对象信息
+    this.$bus.$on('concrete-whisper', (data) => {
+      console.log("接收到数据...")
+      console.log(data)
+      this.whisperUID = data.oppositeUserId;
+      this.whisperName = data.oppositeUserName;
+      this.whisperAvatar = data.oppositeUserPhoto;
+    });
   }
 }
 </script>
