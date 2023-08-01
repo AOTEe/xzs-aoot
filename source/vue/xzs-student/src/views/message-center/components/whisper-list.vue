@@ -68,31 +68,19 @@ export default {
         .then(res=>{
           console.log(res.data)
           this.whisperList = res.data.data;
+          if (this.whisperList.length > 0)
+            this.clickItem(this.whisperList[0],0) //点击第一行不可以放在#点击后面,是因为异步请求还未完成就执行了
         })
-      // this.$axios({
-      //   method: 'post',
-      //   url: '/api/record/getRecentChats',
-      //   headers: {
-      //     'content-type': 'multipart/form-data'
-      //   },
-      //   data: {
-      //     userId : this.currentUser.id
-      //   }
-      // }).then(res => {
-      //   console.log(res.data)
-      //   this.whisperList = res.data;
-      // }, err => {
-      //   console.log(err);
-      // })
     }
 
   },
   watch:{
     currentUser:{
       handler:function(newVal,oldVal){
-        console.log(newVal)
-        if (newVal !=null)
-          this.initWhisperList()
+        if (newVal !=null){
+          debugger
+          this.initWhisperList()//#点击
+        }
       },
       deep:true,
     }
