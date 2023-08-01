@@ -35,13 +35,41 @@ const router = new Router({
     {
       path: '/message',
       component: Layout,
+      name: 'index',
+      meta: { title: '消息中心' },
       children: [
         {
-          path: 'index',
+          path: '/', // 每个路由都需要映射到一个组件。
           component: () => import('@/views/message-center/index'),
-          name: 'MessageIndex',
-          meta: { title: '消息中心' }
-        }
+          name: 'index',
+          children : [
+            {
+              path: 'reply',
+              component: () => import('@/views/message-center/reply'),
+              name: 'reply',
+            },
+            {
+              path: 'at',
+              component: () => import('@/views/message-center/at'),
+              name: 'at',
+            },
+            {
+              path: 'love',
+              component: () => import('@/views/message-center/love'),
+              name: 'love',
+            },
+            {
+              path: 'system',
+              component: () => import('@/views/message-center/system'),
+              name: 'system',
+            },
+            {
+              path: 'whisper/:id?',
+              component: () => import('@/views/message-center/whisper'),
+              name: 'whisper',
+            }
+          ]
+        },
       ]
     },
     {

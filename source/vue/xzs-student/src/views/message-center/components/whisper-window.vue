@@ -272,7 +272,8 @@ export default {
   watch : {
     whisperId : {
       handler:function(newVal,oldVal){
-        console.log(newVal)
+        console.log("私聊对象改变...")
+        this.messageList = [];
         this.getRecords(1,0)
       },
     }
