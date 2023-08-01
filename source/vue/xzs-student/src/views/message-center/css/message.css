@@ -444,6 +444,24 @@ p, span {
     position: relative;
     z-index: 1;
 }
+.is-me .message {
+    position: relative;
+    float: right;
+    color: #fff;
+}
+.message .message-content.is-me {
+    background: #80b9f2;
+    border-radius: 16px 0 16px 16px;
+}
+.is-me .message {
+    position: relative;
+    float: right;
+    color: #fff;
+}
+.is-me .avatar {
+    float: right;
+    background-image: url(//static.hdslb.com/images/member/noface.gif);
+}
 .not-me .message::before {
     left: -6px;
 }
@@ -458,9 +476,6 @@ p, span {
     background-position: center;
     background-repeat: no-repeat;
     background-image: url(//static.hdslb.com/images/member/noface.gif);
-    float: left;
-}
-.msg-item .avatar, .msg-item .message {
     float: left;
 }
 .list {
@@ -649,6 +664,6 @@ p, span {
     touch-action: auto;
     -ms-touch-action: auto;
 }
-.active[data-v-2aa28af9] {
+.active {
     background-color: #e4e5e6;
 }

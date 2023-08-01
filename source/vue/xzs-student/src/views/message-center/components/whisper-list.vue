@@ -7,7 +7,7 @@
 
       <div class="list">
         <GeminiScrollbar  class="gm-scrollbar-list">
-        <div class="list-item" v-for="item in whisperList" @click="clickItem(item)">
+        <div :class= " { 'list-item': true, 'active': selectedIndex === index }" v-for="(item ,index) in whisperList" @click="clickItem(item,index)">
           <div class="avatar" :title="item.oppositeUserName"></div>
           <div class="name-box">
             <div class="name" :title="item.oppositeUserName">{{ item.oppositeUserName }}</div>
@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       whisperList: [],
+      selectedIndex : 0
       /**
        * userId、name、avatar、lastWord
        */
@@ -57,10 +58,9 @@ export default {
     }
   },
   methods:{
-    clickItem(itemData){
-      console.log("itemData")
-      console.log(itemData)
-      console.log(this.$bus)
+    clickItem(itemData,index){
+      console.log(index)
+      this.selectedIndex = index
       this.$bus.$emit('concrete-whisper',itemData);
     },
     initWhisperList(){

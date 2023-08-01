@@ -32,14 +32,16 @@
           </div>
           <div class="msg-time"><span class="time">2023年7月16日 10:09</span>
           </div>
-          <div v-for="message in messageList" class="msg-item not-me"><!---->
+          <div v-for="message in messageList" class="msg-item"
+               :class="whisperId==message.senderId?'msg-item not-me':'msg-item is-me'">
+
             <a  href="//space.bilibili.com/555047479" target="_blank" class="avatar" :title="whisperName" ></a>
-            <!----><!----><!----><!---->
-            <div class="message"><!---->
-              <div data-key="7256232923813322416" class="message-content">
-                {{message.messageContent}}
-              </div><!----><!----><!----><!----><!----></div>
-          </div><!----><!----><!---->
+
+            <div class="message">
+              <div  :class="whisperId==message.senderId?'message-content not-me':'message-content is-me'">
+                {{message.msgContent}}
+              </div></div>
+          </div>
           <div class="msg-push-new" talkerid="555047479" style="display: none;"><a
             href="" target="_blank" class="ar-recommend-item"><img class="ar-recommend-item__img"
                                                                    data-src=""
@@ -54,7 +56,8 @@
                 class="view">0</span><i class="bp-icon-font icon-danmu-a"></i><span class="chat">0</span>
               </div>
             </div>
-          </a><!----></div><!----><!----><!----></div>
+          </a></div>
+        </div>
 
       </div>
       </GeminiScrollbar>
@@ -254,7 +257,7 @@ export default {
 
   data() {
     return{
-      whisperUID : "",
+      whisperId : "",
       whisperName: "",
       whisperAvatar: "",
       messageList : [],
@@ -264,6 +267,14 @@ export default {
   props :{
     currentUser : {
       type : Object
+    }
+  },
+  watch : {
+    whisperId : {
+      handler:function(newVal,oldVal){
+        console.log(newVal)
+        this.getRecords(1,0)
+      },
     }
   },
   methods : {
@@ -313,6 +324,20 @@ export default {
       this.websocketsend("sdfsdf")
 
     },
+    getRecords(index,newMsgCount){
+        this.$axios.post('/api/record/getRecords',
+          "userId="+this.currentUser.id
+          +"&oppositeUserId="+this.whisperId
+          +"&index="+index
+          +"&newMsgCount="+newMsgCount
+        )
+          .then(res=>{
+            console.log(res.data)
+            for (let i = 0; i < res.data.data.length; i++) {
+              this.messageList.unshift(res.data.data[i])
+            }
+          })
+    }
   },
   created() {
     console.log("created...")
@@ -332,7 +357,7 @@ export default {
     this.$bus.$on('concrete-whisper', (data) => {
       console.log("接收到数据...")
       console.log(data)
-      this.whisperUID = data.oppositeUserId;
+      this.whisperId = data.oppositeUserId;
       this.whisperName = data.oppositeUserName;
       this.whisperAvatar = data.oppositeUserPhoto;
     });
