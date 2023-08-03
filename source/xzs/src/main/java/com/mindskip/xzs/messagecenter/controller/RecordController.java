@@ -55,4 +55,12 @@ public class RecordController {
 
         return ResponseUtil.success(records);
     }
+
+    @ResponseBody
+    @RequestMapping("/sendMsg")
+    public Map<String,Object> sendMsg(@RequestBody Record record){
+
+        recordService.sendMsg(record);
+        return ResponseUtil.success();
+    }
 }

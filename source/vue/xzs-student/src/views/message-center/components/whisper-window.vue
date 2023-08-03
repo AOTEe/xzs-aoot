@@ -72,9 +72,10 @@
             <button title="表情" class="emotion-btn-box"></button><!----></div><!---->
         </div>
         <div placeholder="回复一下吧～" class="input-box">
-          <div id="editor" class="core-style" contenteditable="true"
-               style="height: 60px;">&zwj;
-          </div>
+          <textarea id="editor" class="core-style" contenteditable="true"
+                    v-model="textContent"
+               style="height: 60px; outline: none; resize: none">
+          </textarea>
           <div class="indicator" style="bottom: -30px; right: 100px;"><span
             class="">0</span>/<span>500</span></div>
         </div>
@@ -261,6 +262,7 @@ export default {
       whisperName: "",
       whisperAvatar: "",
       messageList : [],
+      textContent : "",
       messageSocket: null,
     }
   },
@@ -274,7 +276,9 @@ export default {
       handler:function(newVal,oldVal){
         console.log("私聊对象改变...")
         this.messageList = [];
-        this.getRecords(1,0)
+        this.getRecords(1,0);
+        if (oldVal == "")
+          this.initWebSocket();
       },
     }
   },
@@ -284,7 +288,7 @@ export default {
       if (typeof (WebSocket) === "undefined") {
         console.log("您的浏览器不支持WebSocket")
       } else {
-        const wsurl = "ws://localhost:8000/chatWebSocket";
+        const wsurl = "ws://localhost:8000/chatWebSocket/"+this.currentUser.id;
         // 实例化 WebSocket
         this.messageSocket = new WebSocket(wsurl);
         // 监听 WebSocket 连接
@@ -308,8 +312,20 @@ export default {
       // this.initWebSocket();
     },
     // 数据接收
-    websocketonmessage(resdata) {
-      console.log(resdata);
+    websocketonmessage(res) {
+      console.log("数据接收");
+      console.log(res)
+      // var item  = {
+      //   senderId : this.whisperId,
+      //   senderName : this.whisperName,
+      //   receiverId:  this.currentUser.id,
+      //   receiverName: this.currentUser.userName,
+      //   msgContent : res.data
+      // }
+
+      var item = JSON.parse(res.data)
+      if (item.senderId == this.whisperId)
+        this.messageList.push(item)
     },
     // 数据发送
     websocketsend(message) {
@@ -319,11 +335,6 @@ export default {
     // 关闭
     websocketclose(e) {
       console.log('WebSocket 断开连接', e);
-    },
-    sendMsg() {
-      console.log("sendMsg...")
-      this.websocketsend("sdfsdf")
-
     },
     getRecords(index,newMsgCount){
         this.$axios.post('/api/record/getRecords',
@@ -338,6 +349,23 @@ export default {
               this.messageList.unshift(res.data.data[i])
             }
           })
+    },
+    sendMsg(){
+      var param = {
+        msgType : "text",
+        senderId : this.currentUser.id,
+        senderName : this.currentUser.userName,
+        receiverId : this.whisperId,
+        receiverName : this.whisperName,
+        msgContent : this.textContent,
+        msgTime : new Date().getTime(),
+      }
+      this.messageList.push(param)
+      this.textContent = ""
+      console.log(param)
+      RecordApi.sendMsg(param).then(res =>{
+
+      })
     }
   },
   created() {
@@ -345,7 +373,6 @@ export default {
   },
   beforeMount() {
     console.log("beforeMount...")
-    this.initWebSocket();
   },
   destroyed() {
     //离开路由之后断开 websocket 连接

@@ -188,11 +188,11 @@ public class Record {
         this.msgFileSize = msgFileSize;
     }
 
-    public String getMsg_time() {
+    public String getMsgTime() {
         return msgTime;
     }
 
-    public void setMsg_time(String msgTime) {
+    public void setMsgTime(String msgTime) {
         this.msgTime = msgTime;
     }
 }

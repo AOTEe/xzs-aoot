@@ -61,7 +61,7 @@
       <if test="msgFilePath != null">
         msg_file_path,
       </if>
-      <if test="msgFIleSize != null">
+      <if test="msgFileSize != null">
         msg_fIle_size,
       </if>
       <if test="msgTime != null">

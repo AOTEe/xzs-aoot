@@ -1,5 +1,7 @@
 package com.mindskip.xzs.messagecenter.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mindskip.xzs.context.WebContext;
@@ -10,13 +12,20 @@ import com.mindskip.xzs.messagecenter.bean.Record;
 import com.mindskip.xzs.messagecenter.repository.RecentChatsMapper;
 import com.mindskip.xzs.messagecenter.repository.RecordMapper;
 import com.mindskip.xzs.messagecenter.service.RecordService;
+import com.mindskip.xzs.messagecenter.websocket.WebSocketUtil;
 import com.mindskip.xzs.repository.UserMapper;
 import com.mindskip.xzs.service.impl.UserServiceImpl;
+import com.mindskip.xzs.utility.DateTimeUtil;
+import com.mindskip.xzs.utility.JsonUtil;
+import com.mindskip.xzs.utility.SnowFlakeGenerateIDUtil;
+import com.qiniu.util.Json;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -51,7 +60,7 @@ public class RecordServiceImpl  implements RecordService {
             for (String oppositeId : recentChatsArr) {
                 RecentChatsVO recentChatsVO = new RecentChatsVO();
 
-                User user = userMapper.getUserById(userId);
+                User user = userMapper.getUserById(oppositeId);
                 //最后一条聊天记录
                 Record lastRecord = recordMapper.getLastRecordByBothSideId(userId,oppositeId);
                 //未读消息数量
@@ -60,9 +69,12 @@ public class RecordServiceImpl  implements RecordService {
                 recentChatsVO.setOppositeUserId(oppositeId);
                 recentChatsVO.setOppositeUserName(user.getUserName());
                 recentChatsVO.setOppositeUserPhoto(user.getImagePath());
-                recentChatsVO.setLastMsg(lastRecord.getMsgContent());
-                recentChatsVO.setLastMsgTime(lastRecord.getMsg_time());
                 recentChatsVO.setUnreadCount(unReadCount);
+                if (lastRecord!=null){
+                    recentChatsVO.setLastMsg(lastRecord.getMsgContent());
+                    recentChatsVO.setLastMsgTime(lastRecord.getMsgTime());
+
+                }
 
                 recentChatsVOList.add(recentChatsVO);
             }
@@ -80,6 +92,17 @@ public class RecordServiceImpl  implements RecordService {
         PageHelper.offsetPage(pageSize * (index - 1) + newMsgCount, pageSize);
         List<Record> records = recordMapper.getRecordsByBothSideId(myId, oppositeId);
         return records;
+    }
+
+
+    public void sendMsg(Record record) {
+
+        record.setMsgTime(DateTimeUtil.dateFormat(new Date(Long.valueOf(record.getMsgTime()))));//前端传时间戳
+        record.setId(new SnowFlakeGenerateIDUtil().generateID());
+        recordMapper.post(record);
+
+        WebSocketUtil.sendMsg(record.getReceiverId(),JSONObject.toJSON(record).toString());
+
     }
 
 }

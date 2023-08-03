@@ -3,4 +3,5 @@ export default {
   connectWebSocket: userId => post('/chatWebSocket/' + userId),
   getRecentChats: query => postParam("/api/record/getRecentChats",query),
   getRecords: query => postParam("/api/record/getRecords",query),
+  sendMsg : query => post('/api/record/sendMsg' ,query)
 }

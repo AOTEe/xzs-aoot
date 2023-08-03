@@ -48,17 +48,17 @@ public class WebSocketUtil {
     /**
      * websocket发送消息到指定用户
      * @param userId
-     * @param msg
+     * @param msgJson
      */
-    public static void sendMsg(String userId, String msg) {
+    public static void sendMsg(String userId, String msgJson) {
         if (StringUtils.isEmpty(userId))
             return;
         List<WebSocketServer> wsList = userMap.get(userId);
         if (wsList != null) {
             for (WebSocketServer ws : wsList) {
                 try {
-                    ws.getSession().getBasicRemote().sendText(msg);
-                } catch (IOException e) {
+                    ws.getSession().getBasicRemote().sendText(msgJson);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

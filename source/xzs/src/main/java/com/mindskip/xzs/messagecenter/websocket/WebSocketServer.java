@@ -5,12 +5,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.*;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@ServerEndpoint(value = "/chatWebSocket")
+@ServerEndpoint(value = "/chatWebSocket/{userId}")
 @RestController
 public class WebSocketServer {
 
@@ -20,14 +21,18 @@ public class WebSocketServer {
 
 
     @OnOpen
-    public void onOpen(Session session) {
+    public void onOpen(Session session, @PathParam("userId") String userId) {
         System.out.println("onOpen");
+        System.out.println(userId);
+        WebSocketUtil.add(userId,this);
         this.session = session;
+
     }
 
     @OnClose
     public void onClose(Session session) {
         System.out.println("onclose");
+        WebSocketUtil.remove(this);
 //        CoreChatWebSocketUtil.remove(this);
     }
 

@@ -13,4 +13,6 @@ public interface RecordService {
 
     public List<RecentChatsVO> getRecentChats(String userId);
 
+    public void sendMsg(Record record);
+
 }
