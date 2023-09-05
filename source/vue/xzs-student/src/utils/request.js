@@ -51,6 +51,18 @@ const post = function (url, params) {
   return request(false, query)
 }
 
+const  formDataPost = function (url, params) {
+  const query = {
+    url: url,
+    method: 'post',
+    withCredentials: true,
+    timeout: 30000,
+    data: params,
+    headers: { 'Content-Type': 'multipart/form-data', 'request-ajax': true }
+  }
+  return request(false, query)
+}
+
 const postWithLoadTip = function (url, params) {
   const query = {
     url: url,
@@ -116,5 +128,6 @@ export {
   postWithLoadTip,
   postWithOutLoadTip,
   get,
-  form
+  form,
+  formDataPost
 }

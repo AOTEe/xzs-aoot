@@ -33,6 +33,18 @@ const router = new Router({
       ]
     },
     {
+      path: '/video',
+      component: Layout,
+      children: [
+        {
+          path: 'index',
+          component: () => import('@/views/video-room/index'),
+          name: 'VideoIndex',
+          meta: { title: '视频课堂' }
+        }
+      ]
+    },
+    {
       path: '/message',
       component: Layout,
       name: 'index',

@@ -21,7 +21,11 @@ module.exports = {
       '/api': {
         target: 'http://localhost:8000',
         changeOrigin: true
-      }
+      },
+      '/v3': {
+        target: 'http://localhost:1207',
+        changeOrigin: true
+      },
     }
   },
   pages: {

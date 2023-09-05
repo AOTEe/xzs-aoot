@@ -1,4 +1,4 @@
-package com.mindskip.xzs.messagecenter.bean;
+package com.mindskip.xzs.message_center.bean;
 
 /**
  * 点赞表

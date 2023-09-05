@@ -11,10 +11,16 @@ import './icons' // icon
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import axios from 'axios'
+import jquery from "jquery";
+import flvjs from "flv.js";
+
+import DPlayer from 'dplayer';
+import moment from 'moment'
 
 
+Vue.prototype.$ = jquery;
 Vue.prototype.$axios = axios
-
+Vue.prototype.$moment = moment
 Vue.use(Element, {
   size: 'medium' // set element-ui default size
 })
