@@ -42,9 +42,9 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/")
-                .setCachePeriod(31556926);
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
+
     }
 
     @Override
@@ -66,5 +66,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .allowedHeaders("*");
         super.addCorsMappings(registry);
     }
+
 
 }
