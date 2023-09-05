@@ -13,4 +13,6 @@ public interface TagService extends BaseService<Tag> {
 
     List<Tag> allTags();
 
+    List<Tag> getTagsByIds(String[] ids);
+
 }

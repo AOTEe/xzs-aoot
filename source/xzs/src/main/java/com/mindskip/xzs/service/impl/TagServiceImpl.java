@@ -75,4 +75,9 @@ public class TagServiceImpl implements TagService {
         List<Tag> tags = tagMapper.list(null);
         return tags;
     }
+
+    @Override
+    public List<Tag> getTagsByIds(String[] ids) {
+        return tagMapper.getTagsByIds(ids);
+    }
 }

@@ -22,4 +22,5 @@ public interface TagMapper {
 
     public int listCount(Tag tag);
 
+    List<Tag> getTagsByIds(String[] ids);
 }
