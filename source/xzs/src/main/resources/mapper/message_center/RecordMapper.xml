@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mindskip.xzs.messagecenter.repository.RecordMapper">
-  <resultMap id="BaseResultMap" type="com.mindskip.xzs.messagecenter.bean.Record">
+<mapper namespace="com.mindskip.xzs.message_center.repository.RecordMapper">
+  <resultMap id="BaseResultMap" type="com.mindskip.xzs.message_center.bean.Record">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="chat_id" jdbcType="VARCHAR" property="chatId" />
     <result column="msg_type" jdbcType="VARCHAR" property="msgType" />
@@ -22,7 +22,7 @@
     receiver_name, receiver_photo, mag_status, msg_content, msg_file_path, msg_file_size, msg_time
   </sql>
 
-  <insert id="post" parameterType="com.mindskip.xzs.messagecenter.bean.Record"  keyProperty="id">
+  <insert id="post" parameterType="com.mindskip.xzs.message_center.bean.Record" keyProperty="id">
     insert into t_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
