@@ -33,13 +33,19 @@ const router = new Router({
       ]
     },
     {
-      path: '/video',
+      path: '/video_room',
       component: Layout,
       children: [
         {
-          path: 'index',
-          component: () => import('@/views/video-room/index'),
+          path: 'index2',
+          component: () => import('@/views/video-room/index2'),
           name: 'VideoIndex',
+          meta: { title: '视频课堂' }
+        },
+        {
+          path: '/video/:id',
+          component: () => import('@/views/video-room/video'),
+          name: 'video',
           meta: { title: '视频课堂' }
         }
       ]

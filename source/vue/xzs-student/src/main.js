@@ -12,10 +12,9 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import axios from 'axios'
 import jquery from "jquery";
-import flvjs from "flv.js";
+import moment from 'moment';
+import VueLazyLoad from 'vue-lazyload'// 1.图片懒加载
 
-import DPlayer from 'dplayer';
-import moment from 'moment'
 
 
 Vue.prototype.$ = jquery;
@@ -23,6 +22,11 @@ Vue.prototype.$axios = axios
 Vue.prototype.$moment = moment
 Vue.use(Element, {
   size: 'medium' // set element-ui default size
+})
+// 使用懒加载的插件   3.修改img :src -> v-lazy
+Vue.use(VueLazyLoad, {
+  // 占位图: 还没加载完，用这个图片代替
+  loading: require('./assets/img/bilibili.png')
 })
 
 Vue.config.productionTip = false
