@@ -191,14 +191,14 @@ export default {
         console.log(this.currentUser)
         const wsurl = "ws://localhost:8000/onlineViewsWebSocket/10086/"+this.currentUser.id;
         // 实例化 WebSocket
-        this.messageSocket = new WebSocket(wsurl);
+        this.onlineViewSocket = new WebSocket(wsurl);
         // 监听 WebSocket 连接
-        this.messageSocket.onopen = this.websocketonopen;
+        this.onlineViewSocket.onopen = this.websocketonopen;
         // 监听 WebSocket 错误信息
-        this.messageSocket.onerror = this.websocketonerror;
+        this.onlineViewSocket.onerror = this.websocketonerror;
         // 监听 WebSocket 消息
-        this.messageSocket.onmessage = this.websocketonmessage;
-        this.messageSocket.onclose = this.websocketclose;
+        this.onlineViewSocket.onmessage = this.websocketonmessage;
+        this.onlineViewSocket.onclose = this.websocketclose;
 
       }
     },
@@ -232,9 +232,16 @@ export default {
 
     })
     console.log(this.currentUser)
-
-
+  },
+  beforeRouteLeave(to, from, next) {
+    // 在组件即将离开时触发的逻辑
+    // 可以执行清理操作或其他需要的操作
+    //关闭websocekt连接
+    this.onlineViewSocket.close()
+    // 调用 next() 表示可以离开组件
+    next();
   }
+
 }
 
 
