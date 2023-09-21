@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mindskip.xzs.message_center.repository.LikeMapper">
+  <resultMap id="BaseResultMap" type="com.mindskip.xzs.message_center.bean.Like">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="topic_id" jdbcType="VARCHAR" property="topicId" />
+    <result column="topic_type" jdbcType="VARCHAR" property="topicType" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="operate_time" jdbcType="VARCHAR" property="operateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, topic_id, topic_type, user_id, status, operate_time
+  </sql>
+
+  <insert id="insert" parameterType="com.mindskip.xzs.message_center.bean.Like" keyProperty="id">
+    insert into t_like
+    (id, topic_id, topic_type, user_id, status, operate_time)
+    values (#{id},#{topicId},#{topicType},#{userId},#{status},#{operateTime})
+  </insert>
+
+  <select id="getLikes" resultType="java.util.List">
+    SELECT user_id FROM `t_like` WHERE
+    topic_id = #{topicId}
+    and status = '1'
+  </select>
+
+  <select id="getDislikes" resultType="java.util.List">
+    SELECT user_id FROM `t_like` WHERE
+    topic_id = #{topicId}
+    and status = '-1'
+  </select>
+
+  <select id="getRelation" resultType="java.lang.Integer">
+    SELECT status FROM `t_like` WHERE
+    (video_id = #{videoId} and user_id = #{userId})
+  </select>
+
+  <update id="updateStatus">
+    update `t_like` set status = #{status} , operate_time = #{operateTime}
+    where video_id = #{videoId} and user_id =#{userId}
+  </update>
+
+</mapper>

@@ -10,6 +10,7 @@ public class VideoVO {
     private String introduction;
     private String path;
     private int likesNum;
+    private int dislikesNum;
     private int viewsNum;
     private int collectionsNum;
     private String tags;
@@ -77,6 +78,14 @@ public class VideoVO {
 
     public void setLikesNum(int likesNum) {
         this.likesNum = likesNum;
+    }
+
+    public int getDislikesNum() {
+        return dislikesNum;
+    }
+
+    public void setDislikesNum(int dislikesNum) {
+        this.dislikesNum = dislikesNum;
     }
 
     public int getViewsNum() {

@@ -100,10 +100,22 @@ public class VideoController {
 
     @RequestMapping("/api/student/video/{id}")
     @ResponseBody
-    public Map<String, Object> getVideo(@PathVariable String id) {
+    public Map<String, Object> videoInfo(@PathVariable String id) {
 
         return ResponseUtil.success( videoService.getVideoVO(id));
 
+    }
+
+    /**
+     * 获取该视频是否点赞、点踩、收藏等信息
+     * @return
+     */
+    @RequestMapping("/api/student/videoRelation/{videoId}/{userId}")
+    @ResponseBody
+    public Map<String,Object> videoRelation(@PathVariable String videoId,@PathVariable String userId){
+
+
+        return ResponseUtil.success(videoService.videoRelation(videoId,userId));
     }
 }
 

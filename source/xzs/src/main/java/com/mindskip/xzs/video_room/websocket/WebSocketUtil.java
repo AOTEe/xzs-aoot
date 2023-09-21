@@ -152,7 +152,7 @@ public class WebSocketUtil {
             if (onlineViewsSessionInfos.size() == 0){
                 onlineUsers.remove(userId);
                 //发送消息人数发生变化
-                //sendOnlineNum(viewsSessionInfo.getVideoId());
+                sendOnlineNum(viewsSessionInfo.getVideoId());
             }
             System.out.println("用户："+userId +"离开视频："+videoId +"，当前在线人数："+onlineUsers.size());
             if (onlineUsers.size() == 0)

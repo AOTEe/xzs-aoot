@@ -71,14 +71,14 @@
           </div>
           <div class="video-toolbar-right" data-v-6ce38e46="">
             <div class="toolbar-left-item-wrap" data-v-6ce38e46="">
-              <div title="点赞（Q）" class="video-like video-toolbar-right-item" data-v-6ce38e46=""><!---->
+              <div title="点赞（Q）"  @click="like('10086',currentUser.id)" :class="videoRelation.like?'video-like video-toolbar-left-item on':'video-like video-toolbar-right-item'" >
                 <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"
                      class="video-like-icon video-toolbar-item-icon">
                   <path fill-rule="evenodd" clip-rule="evenodd"
                         d="M9.77234 30.8573V11.7471H7.54573C5.50932 11.7471 3.85742 13.3931 3.85742 15.425V27.1794C3.85742 29.2112 5.50932 30.8573 7.54573 30.8573H9.77234ZM11.9902 30.8573V11.7054C14.9897 10.627 16.6942 7.8853 17.1055 3.33591C17.2666 1.55463 18.9633 0.814421 20.5803 1.59505C22.1847 2.36964 23.243 4.32583 23.243 6.93947C23.243 8.50265 23.0478 10.1054 22.6582 11.7471H29.7324C31.7739 11.7471 33.4289 13.402 33.4289 15.4435C33.4289 15.7416 33.3928 16.0386 33.3215 16.328L30.9883 25.7957C30.2558 28.7683 27.5894 30.8573 24.528 30.8573H11.9911H11.9902Z"
                         fill="currentColor"></path>
                 </svg>
-                <span class="video-like-info video-toolbar-item-text">{{likeNum}}</span></div><!----></div>
+                <span class="video-like-info video-toolbar-item-text">{{videoInfo.likesNum}}</span></div><!----></div>
             <div class="toolbar-left-item-wrap" data-v-6ce38e46="">
               <div title="收藏（E）" class="video-fav video-toolbar-right-item" data-v-edb4b09a="" data-v-6ce38e46="">
                 <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +87,7 @@
                         d="M19.8071 9.26152C18.7438 9.09915 17.7624 8.36846 17.3534 7.39421L15.4723 3.4972C14.8998 2.1982 13.1004 2.1982 12.4461 3.4972L10.6468 7.39421C10.1561 8.36846 9.25639 9.09915 8.19315 9.26152L3.94016 9.91102C2.63155 10.0734 2.05904 11.6972 3.04049 12.6714L6.23023 15.9189C6.96632 16.6496 7.29348 17.705 7.1299 18.7605L6.39381 23.307C6.14844 24.6872 7.62063 25.6614 8.84745 25.0119L12.4461 23.0634C13.4276 22.4951 14.6544 22.4951 15.6359 23.0634L19.2345 25.0119C20.4614 25.6614 21.8518 24.6872 21.6882 23.307L20.8703 18.7605C20.7051 17.705 21.0339 16.6496 21.77 15.9189L24.9597 12.6714C25.9412 11.6972 25.3687 10.0734 24.06 9.91102L19.8071 9.26152Z"
                         fill="currentColor"></path>
                 </svg>
-                <span class="video-fav-info video-toolbar-item-text" data-v-edb4b09a="">{{collectionNum}}</span></div><!----><!---->
+                <span class="video-fav-info video-toolbar-item-text" data-v-edb4b09a="">{{videoInfo.collectionsNum}}</span></div><!----><!---->
             </div>
 
           </div>
@@ -116,8 +116,8 @@ export default {
       player : null,//nPlayer插件
       onlineUserNum : 1,
       currentUser : null,
-      likeNum : 0,
-      collectionNum : 0,
+      videoInfo : null,
+      videoRelation : null,
       onlineViewSocket : null
     }
   },
@@ -127,7 +127,13 @@ export default {
     }
   },
   methods: {
-    async createVideo() {
+    async initVideo() {
+      // 获取视频信息
+      this.videoInfo = await this.getVideoInfo("10086");
+      console.log("this.videoInfo")
+      console.log(this.videoInfo)
+
+      this.videoRelation = await this.getVideoRelation("10086",this.currentUser.id)
       // var danmuList =
       this.danmuList = await this.getDanmuList("10086");
       console.log(this.danmuList)
@@ -157,6 +163,20 @@ export default {
         })
       } ))
     },
+    getVideoRelation(videoId,userId){
+      return new Promise((resolve => {
+        CommonApi.postApi('/api/student/videoRelation/'+videoId+"/"+userId ).then(res => {
+          resolve(res.data)
+        })
+      }))
+    },
+    getVideoInfo(videoId){
+      return new Promise((resolve => {
+        CommonApi.postApi('/api/student/video/'+videoId ).then(res => {
+          resolve(res.data)
+        })
+      }))
+    },
     //弹幕列表转换为需要展示的数据结构
     formatDanmu(danmuList){
       var displayList = new Array();
@@ -181,6 +201,69 @@ export default {
       CommonApi.postApi('/api/danmu/post', danmu).then(res => {
         console.log(res)
       })
+    },
+    like(videoId,userId){
+      //是否已经点赞；是：取消赞 否：点赞
+      if (this.videoRelation.like){
+        this.videoRelation.like = false
+        this.videoInfo.likesNum = this.videoInfo.likesNum - 1 ;
+        var formData = new FormData();
+        formData.append("topicId",videoId)
+        formData.append("userId",userId)
+        formData.append("topicType","video")
+
+        this.$axios.post('/api/student/like/cancelLike', formData,{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(res => {
+          console.log(res)
+          })
+        // CommonApi.formDataPostApi('/api/like/cancelLike', data).then(res => {
+        //   console.log(res)
+        // })
+      }else {
+        //还要判断之前是否是踩,前端只设置下标识,后台有处理
+        if (this.videoRelation.dislike)
+          this.videoRelation.dislike = false;
+        this.videoRelation.like = true
+        this.videoInfo.likesNum = this.videoInfo.likesNum + 1 ;
+        var data ={
+          topicId : videoId,
+          userId : userId,
+          topicType : "video"
+        }
+        var formData = new FormData();
+        formData.append("topicId",videoId)
+        formData.append("userId",userId)
+        formData.append("topicType","video")
+        this.$axios.post('/api/student/like/like', formData,{headers: {'Content-Type': 'multipart/form-data'}}).then(res => {
+          console.log(res)
+        })
+      }
+    },
+    dislike(){
+      //是否已经点踩；是：取消踩 否：点踩
+      if (this.videoRelation.dislike){
+        this.videoRelation.dislike = false
+        var data ={
+          topicId : videoId,
+          userId : userId,
+          topicType : "video"
+        }
+        CommonApi.postApi('/api/student/like/cancelDislike', data).then(res => {
+          console.log(res)
+        })
+      }else {
+        //还要判断之前是否是赞,前端只设置下标识,后台有处理
+        if (this.videoRelation.like)
+          this.videoRelation.like = false;
+        this.videoRelation.dislike = true
+        var data ={
+          topicId : videoId,
+          userId : userId,
+          topicType : "video"
+        }
+        CommonApi.postApi('/api/student/like/dislike', data).then(res => {
+          console.log(res)
+        })
+      }
     },
     //初始化webSocket
     initWebSocket() {
@@ -227,7 +310,7 @@ export default {
       _this.currentUser = re.response
       console.log(re.response)
       console.log(this.currentUser)
-      this.createVideo();
+      this.initVideo();
       this.initWebSocket();
 
     })
@@ -499,6 +582,12 @@ export default {
   align-items: center;
   -webkit-user-select: none;
   user-select: none;
+}
+.video-toolbar-left-item.on, .video-toolbar-left-item:hover {
+  color: #00aeec;
+}
+.video-toolbar-right-item:hover{
+  color: #00aeec;
 }
 
 </style>

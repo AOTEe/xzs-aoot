@@ -10,13 +10,16 @@ public class Like {
     //评论或者视频的id
     private String topicId;
 
+    // 类型有video、question、comment
     private String topicType;
 
     //点赞者id
     private String userId;
 
-    //1:赞 0:取消赞
-    private String status;
+    //1:赞 0:取消赞 -1:点踩
+    private int status;
+
+    private String operateTime;
 
     public String getId() {
         return id;
@@ -50,22 +53,22 @@ public class Like {
         this.userId = userId;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Like(String id, String topicId, String topicType, String userId, String status) {
-        this.id = id;
-        this.topicId = topicId;
-        this.topicType = topicType;
-        this.userId = userId;
+    public void setStatus(int status) {
         this.status = status;
     }
 
     public Like() {
+    }
+
+    public String getOperateTime() {
+        return operateTime;
+    }
+
+    public void setOperateTime(String operateTime) {
+        this.operateTime = operateTime;
     }
 }
