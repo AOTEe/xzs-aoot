@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface VideoMapper {
 
     public Video getVideoById(String videoId);
+
+    public int updateLikeNum(String videoId, int num);
 }

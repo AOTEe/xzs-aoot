@@ -15,4 +15,11 @@ public interface LikeService {
 
     List getDislikes(String topicId);
 
+    void likeToDB(String topicId, String userId, String topicType);
+
+    void cancelLikeToDB(String topicId, String userId);
+
+    void dislikeToDB(String topicId, String userId, String topicType);
+
+    void cancelDislikeToDB(String topicId, String userId);
 }

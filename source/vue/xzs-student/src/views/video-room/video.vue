@@ -71,7 +71,7 @@
           </div>
           <div class="video-toolbar-right" data-v-6ce38e46="">
             <div class="toolbar-left-item-wrap" data-v-6ce38e46="">
-              <div title="点赞（Q）"  @click="like('10086',currentUser.id)" :class="videoRelation.like?'video-like video-toolbar-left-item on':'video-like video-toolbar-right-item'" >
+              <div title="点赞（Q）"  @click="like('10086',currentUser.id)" :class="videoRelation.like?'video-like video-toolbar-right-item on':'video-like video-toolbar-right-item'" >
                 <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"
                      class="video-like-icon video-toolbar-item-icon">
                   <path fill-rule="evenodd" clip-rule="evenodd"
@@ -532,11 +532,11 @@ export default {
   word-break: break-word;
   white-space: nowrap;
 }
-.video-toolbar-container .video-toolbar-left .toolbar-left-item-wrap[data-v-6ce38e46] {
+.video-toolbar-container .video-toolbar-left .toolbar-left-item-wrap {
   position: relative;
   margin-right: 8px;
 }
-.video-toolbar-container .video-toolbar-right .toolbar-right-complaint[data-v-6ce38e46] {
+.video-toolbar-container .video-toolbar-right .toolbar-right-complaint {
   margin-right: 18px;
 }
 .video-toolbar-right-item {
@@ -577,13 +577,13 @@ export default {
   transition: all .3s;
   cursor: pointer;
 }
-.video-toolbar-container .video-toolbar-right[data-v-6ce38e46] {
+.video-toolbar-container .video-toolbar-right {
   display: flex;
   align-items: center;
   -webkit-user-select: none;
   user-select: none;
 }
-.video-toolbar-left-item.on, .video-toolbar-left-item:hover {
+.on{
   color: #00aeec;
 }
 .video-toolbar-right-item:hover{

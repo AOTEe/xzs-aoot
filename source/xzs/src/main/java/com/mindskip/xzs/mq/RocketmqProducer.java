@@ -19,7 +19,7 @@ public class RocketmqProducer {
     public static final String TEST_TOPIC = "TEST_TOPIC";
 
     //发送消息的实例
-    public void sendMessage(String topic,String msg){
+    public void sendMessage(String topic,Object msg){
         rocketMQTemplate.convertAndSend(topic,msg);
     }
 

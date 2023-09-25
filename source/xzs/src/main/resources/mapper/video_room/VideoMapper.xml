@@ -91,6 +91,9 @@
     where id = #{videoId}
   </select>
 
+    <update id="updateLikeNum">
+        update t_video set likes_num = #{num} where id =#{videoId}
+    </update>
 
 
 
