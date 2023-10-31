@@ -1,4 +1,4 @@
-package com.mindskip.xzs.message_center.bean;
+package com.mindskip.xzs.message_center.domain.entity;
 
 /**
  * 最近私聊列表

@@ -1,7 +1,7 @@
 package com.mindskip.xzs.message_center.service;
 
-import com.mindskip.xzs.message_center.bean.RecentChatsVO;
-import com.mindskip.xzs.message_center.bean.Record;
+import com.mindskip.xzs.message_center.domain.vo.RecentChatsVO;
+import com.mindskip.xzs.message_center.domain.entity.Record;
 
 import java.util.List;
 

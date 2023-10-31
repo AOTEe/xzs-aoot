@@ -1,6 +1,6 @@
 package com.mindskip.xzs.message_center.consumer;
 
-import com.mindskip.xzs.message_center.bean.LikeMessageDTO;
+import com.mindskip.xzs.message_center.domain.entity.LikeMessageDTO;
 import com.mindskip.xzs.message_center.service.LikeService;
 import com.mindskip.xzs.mq.MQConstant;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;

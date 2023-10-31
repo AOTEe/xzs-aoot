@@ -1,6 +1,6 @@
 package com.mindskip.xzs.message_center.repository;
 
-import com.mindskip.xzs.message_center.bean.RecentChats;
+import com.mindskip.xzs.message_center.domain.entity.RecentChats;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

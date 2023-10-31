@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mindskip.xzs.message_center.repository.LikeMapper">
-  <resultMap id="BaseResultMap" type="com.mindskip.xzs.message_center.bean.Like">
+  <resultMap id="BaseResultMap" type="com.mindskip.xzs.message_center.domain.entity.Like">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="topic_id" jdbcType="VARCHAR" property="topicId" />
     <result column="topic_type" jdbcType="VARCHAR" property="topicType" />
@@ -13,7 +13,7 @@
     id, topic_id, topic_type, user_id, status, operate_time
   </sql>
 
-  <insert id="insert" parameterType="com.mindskip.xzs.message_center.bean.Like" keyProperty="id">
+  <insert id="insert" parameterType="com.mindskip.xzs.message_center.domain.entity.Like" keyProperty="id">
     insert into t_like
     (id, topic_id, topic_type, user_id, status, operate_time)
     values (#{id},#{topicId},#{topicType},#{userId},#{status},#{operateTime})

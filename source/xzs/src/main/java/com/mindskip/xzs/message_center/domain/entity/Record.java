@@ -1,4 +1,4 @@
-package com.mindskip.xzs.message_center.bean;
+package com.mindskip.xzs.message_center.domain.entity;
 
 /**
  * 私聊实体类

@@ -1,7 +1,7 @@
 package com.mindskip.xzs.message_center.controller;
 
-import com.mindskip.xzs.message_center.bean.RecentChatsVO;
-import com.mindskip.xzs.message_center.bean.Record;
+import com.mindskip.xzs.message_center.domain.vo.RecentChatsVO;
+import com.mindskip.xzs.message_center.domain.entity.Record;
 import com.mindskip.xzs.message_center.service.RecordService;
 import com.mindskip.xzs.utility.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;

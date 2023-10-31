@@ -1,6 +1,9 @@
 package com.mindskip.xzs.message_center.controller;
 
+import com.mindskip.xzs.base.BaseApiController;
+import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.message_center.service.LikeService;
+import com.mindskip.xzs.utility.Response;
 import com.mindskip.xzs.utility.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +19,7 @@ import java.util.Map;
  */
 @RequestMapping("/api/student/like")
 @Controller
-public class LikeController {
+public class LikeController extends BaseApiController {
 
     @Autowired
     LikeService likeService;
@@ -49,4 +52,16 @@ public class LikeController {
     @ResponseBody
     @RequestMapping("/getLikeNum")
     public void getLikeNum(){}
+
+    /**
+     * 评论comment的点赞等行为
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/commentAction")
+    public Response commentAction(String commentId,int action){
+        User currentUser = getCurrentUser();
+        likeService.commentAction(commentId,currentUser.getId(),action);
+        return  ResponseUtil.responseSuccess();
+    }
 }

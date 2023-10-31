@@ -63,6 +63,17 @@ const  formDataPost = function (url, params) {
   return request(false, query)
 }
 
+// const  formDataPost = function (url, params) {
+//   const query = {
+//     url: url,
+//     method: 'post',
+//     withCredentials: true,
+//     timeout: 30000,
+//     data: params,
+//     headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'request-ajax': true }
+//   }
+//   return request(false, query)
+// }
 const postWithLoadTip = function (url, params) {
   const query = {
     url: url,

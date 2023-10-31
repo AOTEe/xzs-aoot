@@ -1,8 +1,12 @@
 package com.mindskip.xzs.message_center.service.impl;
 
-import com.mindskip.xzs.message_center.bean.Like;
-import com.mindskip.xzs.message_center.bean.LikeMessageDTO;
+import com.mindskip.xzs.message_center.domain.entity.Comment;
+import com.mindskip.xzs.message_center.domain.entity.Like;
+import com.mindskip.xzs.message_center.domain.entity.LikeMessageDTO;
+import com.mindskip.xzs.message_center.enums.TopicEnum;
+import com.mindskip.xzs.message_center.repository.CommentMapper;
 import com.mindskip.xzs.message_center.repository.LikeMapper;
+import com.mindskip.xzs.message_center.service.CommentService;
 import com.mindskip.xzs.message_center.service.LikeService;
 import com.mindskip.xzs.mq.MQConstant;
 import com.mindskip.xzs.mq.RocketmqProducer;
@@ -34,6 +38,10 @@ public class LikeServiceImpl implements LikeService {
     RocketmqProducer rocketmqProducer;
     @Autowired
     VideoMapper videoMapper;
+    @Autowired
+    CommentService commentService;
+    @Autowired
+    CommentMapper commentMapper;
 
     @Override
     public void like(String topicId, String userId, String topicType) {
@@ -294,6 +302,76 @@ public class LikeServiceImpl implements LikeService {
         }
         if (videoVO != null)
             videoMapper.updateLikeNum(topicId, videoVO.getLikesNum());
+    }
+
+    @Override
+    public void commentAction(String commentId,String userId,int action){
+
+
+        // 是否取消赞或踩后台自行判断
+        Like like = likeMapper.getLike(commentId, userId);
+
+        Comment comment = commentMapper.getCommentById(commentId);
+
+        if (like == null) {
+            //点赞表记录
+            like = new Like();
+            like.setId(String.valueOf(UUID.randomUUID()));
+            like.setStatus(action);
+            like.setTopicId(commentId);
+            like.setUserId(userId);
+            like.setTopicType(TopicEnum.COMMENT.getValue());
+            like.setOperateTime(TimeUtil.now());
+            likeMapper.insert(like);
+
+           //评标表点赞数
+            if (1 == action) {
+                comment.setLike(comment.getLike() + 1);
+            }else if (-1 == action){
+                comment.setLike(comment.getDislike() + 1);
+            }
+        }else {
+
+            //评标表点赞数
+            if (like.getStatus() == 1) {
+                if (1 == action) {
+                    //取消赞
+                    comment.setLike(comment.getLike() - 1);
+                    like.setStatus(0);
+                } else if (-1 == action) {
+                    //赞->踩
+                    comment.setDislike(comment.getDislike() + 1);
+                    comment.setLike(comment.getLike() - 1);
+                    like.setStatus(action);
+                }
+            } else if (like.getStatus() == -1) {
+                if (1 == action) {
+                    //踩->赞
+                    comment.setLike(comment.getLike() + 1);
+                    comment.setDislike(comment.getDislike() - 1);
+                    like.setStatus(action);
+                } else if (-1 == action) {
+                    //取消踩
+                    comment.setDislike(comment.getDislike() - 1);
+                    like.setStatus(0);
+
+                }
+            }else {
+                if (1 == action) {
+                    //赞
+                    comment.setLike(comment.getLike() + 1);
+                    like.setStatus(action);
+                } else if (-1 == action) {
+                    //踩
+                    comment.setDislike(comment.getDislike() + 1);
+                    like.setStatus(action);
+                }
+            }
+            //点赞表记录
+            like.setOperateTime(TimeUtil.now());
+            likeMapper.updateStatus(like);
+            commentMapper.updateComment(comment);
+        }
     }
 
 }

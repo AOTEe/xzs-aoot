@@ -28,4 +28,14 @@ public class ResponseUtil {
         response.put("data",data);
         return response;
     }
+
+    public static Response responseSuccess(Object data){
+        Response response = new Response(SUCCESS,"成功",data);
+        return  response;
+    }
+
+    public static Response responseSuccess(){
+        Response response = new Response(SUCCESS,"成功",null);
+        return  response;
+    }
 }

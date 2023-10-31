@@ -44,7 +44,7 @@ const router = new Router({
         },
         {
           path: '/video/:id',
-          component: () => import('@/views/video-room/video'),
+          component: () => import('@/views/video-room/videoPage'),
           name: 'video',
           meta: { title: '视频课堂' }
         }

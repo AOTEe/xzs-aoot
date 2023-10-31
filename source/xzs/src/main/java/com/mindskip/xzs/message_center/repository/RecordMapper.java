@@ -1,6 +1,6 @@
 package com.mindskip.xzs.message_center.repository;
 
-import com.mindskip.xzs.message_center.bean.Record;
+import com.mindskip.xzs.message_center.domain.entity.Record;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

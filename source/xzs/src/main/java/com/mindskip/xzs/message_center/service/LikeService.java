@@ -22,4 +22,6 @@ public interface LikeService {
     void dislikeToDB(String topicId, String userId, String topicType);
 
     void cancelDislikeToDB(String topicId, String userId);
+
+    void commentAction(String commentId,String userId,int action);
 }

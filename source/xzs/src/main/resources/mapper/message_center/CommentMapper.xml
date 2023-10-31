@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mindskip.xzs.message_center.repository.CommentMapper">
+    <resultMap id="BaseResultMap" type="com.mindskip.xzs.message_center.domain.entity.Comment">
+        <id column="id"  property="id"/>
+        <result column="topic_id"  property="topicId"/>
+        <result column="topic_type"  property="topicType"/>
+        <result column="previous_comment_id"  property="previousCommentId"/>
+        <result column="content"  property="content"/>
+        <result column="user_id"  property="userId"/>
+        <result column="at"  property="at"/>
+        <result column="comment_time"  property="commentTime"/>
+        <result column="like"  property="like"/>
+        <result column="dislike"  property="dislike"/>
+    </resultMap>
+
+    <!-- 定义 ResultMap，将查询结果映射到 CommentVO -->
+    <resultMap id="commentVOResultMap" type="com.mindskip.xzs.message_center.domain.vo.CommentVO">
+        <id property="id" column="id"/>
+        <result property="topicId" column="topic_id"/>
+        <result property="topicType" column="topic_type"/>
+        <result property="previousCommentId" column="previous_comment_id"/>
+        <result property="previousUserId" column="previous_user_id"/>
+        <result property="previousUserName" column="previous_user_name"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="avatar" column="avatar"/>
+        <result property="commentTime" column="comment_time"/>
+        <result property="like"  column="like"/>
+        <result property="dislike"  column="dislike"/>
+        <result property="action"  column="action"/>
+        <result property="subReplyCount"  column="sub_reply_count"/>
+
+        <!-- 嵌套属性 member 映射 -->
+        <association property="member" javaType="com.mindskip.xzs.message_center.domain.vo.Member">
+            <result property="uid" column="uid"/>
+            <result property="uname" column="uname"/>
+            <result property="sex" column="sex"/>
+            <result property="avatar" column="avatar"/>
+            <!-- 其他 member 属性映射 -->
+        </association>
+
+        <!-- 嵌套属性 content 映射 -->
+        <association property="content" javaType="com.mindskip.xzs.message_center.domain.vo.Content">
+            <result property="message" column="content"/>
+            <!-- 其他 member 属性映射 -->
+        </association>
+
+        <!-- 嵌套属性 subReply 映射 -->
+        <collection property="subReply" ofType="com.mindskip.xzs.message_center.domain.vo.CommentVO">
+            <id property="id" column="sub_id"/>
+            <result property="topicId" column="sub_topic_id"/>
+            <result property="topicType" column="sub_topic_type"/>
+            <result property="previousCommentId" column="sub_previous_comment_id"/>
+            <result property="userId" column="sub_user_id"/>
+            <result property="commentTime" column="sub_comment_time"/>
+            <result property="like"  column="sub_like"/>
+            <result property="dislike"  column="sub_dislike"/>
+            <result property="action"  column="sub_action"/>
+            <!-- 嵌套属性 member 映射 -->
+            <association property="member" javaType="com.mindskip.xzs.message_center.domain.vo.Member">
+                <result property="uid" column="sub_uid"/>
+                <result property="uname" column="sub_uname"/>
+                <result property="sex" column="sub_sex"/>
+                <result property="avatar" column="sub_avatar"/>
+            </association>
+            <!-- 嵌套属性 content 映射 -->
+            <association property="content" javaType="com.mindskip.xzs.message_center.domain.vo.Content">
+                <result property="message" column="sub_content"/>
+                <!-- 其他 member 属性映射 -->
+            </association>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, topic_id, topic_type, user_id, status, operate_time
+  </sql>
+
+    <insert id="add" parameterType="com.mindskip.xzs.message_center.domain.entity.Comment" keyProperty="id">
+    insert into t_comment
+    (id, topic_id, topic_type, previous_comment_id, content, user_id ,`at` ,comment_time)
+    values (#{id},#{topicId},#{topicType},#{previousCommentId},#{content},#{userId},#{at},#{commentTime})
+  </insert>
+
+
+    <select id="getCommentsByTopicId" resultMap="commentVOResultMap">
+    SELECT
+	    t1.*,
+    	t2.id AS sub_id,
+    	t2.topic_id AS sub_topic_id,
+	    t2.topic_type AS sub_topic_type,
+	    t2.previous_comment_id AS sub_previous_comment_id,
+	    t2.user_id AS sub_user_id,
+	    t2.comment_time AS sub_comment_time,
+	    t2.content AS sub_content,
+	    t2.like AS sub_like,
+	    t2.dislike AS sub_dislike,
+	    t3.id AS uid,
+	    t3.user_name AS uname,
+	    case when t3.sex  = '1' then '男' else '女' end as sex,
+	    t4.image_path AS avatar,
+	    t4.id AS sub_uid,
+	    t4.user_name AS sub_uname,
+	    case when t3.sex  = '1' then '男' else '女' end as sub_sex,
+	    t4.image_path AS sub_avatar,
+	    CASE WHEN t5.status IS NOT NULL THEN t5.status ELSE '0' END AS `action` ,
+	    CASE WHEN t6.status IS NOT NULL THEN t6.status ELSE '0' END AS `sub_action` ,
+		( SELECT COUNT(*) FROM t_comment AS sc WHERE sc.topic_id = t1.id
+		) AS sub_reply_count
+    FROM
+	    `t_comment` AS t1
+    	LEFT JOIN (
+            SELECT
+                t2.*,
+                ROW_NUMBER() OVER (PARTITION BY t2.topic_id ORDER BY t2.comment_time) AS row_num
+            FROM
+            `t_comment` AS t2
+        ) AS t2
+        ON t1.id = t2.topic_id AND t2.row_num &lt;= 2
+	    LEFT JOIN t_user AS t3 ON t1.user_id = t3.id
+	    LEFT JOIN t_user AS t4 ON t2.user_id = t4.id
+	    LEFT JOIN t_like AS t5 ON t5.user_id = #{userId} and t5.topic_id = t1.id
+        LEFT JOIN t_like AS T6 ON t6.user_id = #{userId} and t6.topic_id = t2.id
+    WHERE
+	    t1.topic_id = #{topicId}
+	ORDER BY comment_time,sub_comment_time ASC
+  </select>
+
+    <select id="moreComments" resultMap="commentVOResultMap">
+	SELECT u.user_name as uname,
+	u.id as uid,
+	u.image_path as avatar,
+	case when u.sex  = '1' then '男' else '女' end as sex,
+	c.* from t_comment as c ,t_user as u
+	where
+	topic_id=#{rootCommentId}
+	and c.user_id = u.id
+    </select>
+
+    <select id="getCommentById" resultType="com.mindskip.xzs.message_center.domain.entity.Comment">
+        select  * from t_comment where id=#{commentId}
+    </select>
+
+    <update id="updateComment">
+        update t_comment set `like` =#{like} ,dislike =#{dislike} where id =#{id}
+    </update>
+</mapper>

@@ -1,4 +1,4 @@
-package com.mindskip.xzs.message_center.bean;
+package com.mindskip.xzs.message_center.domain.vo;
 
 /**
  * 最近聊天列表VO
