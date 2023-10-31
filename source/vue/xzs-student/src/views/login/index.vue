@@ -39,7 +39,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import loginApi from '@/api/login'
-
+import userApi from '@/api/user'
 export default {
   name: 'Login',
   data () {
@@ -119,6 +119,11 @@ export default {
             if (result && result.code === 1) {
               _this.setUserName(_this.loginForm.userName)
               _this.$router.push({ path: '/' })
+              //设置本地用户信息缓存
+              userApi.getCurrentUser().then(res => {
+                console.log(res.response)
+                _this.setUserInfo(res.response)
+              })
             } else {
               _this.loading = false
               _this.$message.error(result.message)
@@ -131,7 +136,7 @@ export default {
         }
       })
     },
-    ...mapMutations('user', ['setUserName'])
+    ...mapMutations('user', ['setUserName','setUserInfo'])
   }
 }
 </script>
