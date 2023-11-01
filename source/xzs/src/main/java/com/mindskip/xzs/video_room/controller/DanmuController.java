@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@RequestMapping("/api/danmu")
 @RestController
 public class DanmuController {
 
@@ -32,7 +33,7 @@ public class DanmuController {
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
-    @RequestMapping("/api/danmu/demo")
+    @RequestMapping("/demo")
     public Map<String,Object> getDanmuList(){
         System.out.println("demo...");
         List danmu = new ArrayList();
@@ -48,12 +49,12 @@ public class DanmuController {
         return ResponseUtil.danmuSuccess(danmu);
     }
 
-    @RequestMapping("/api/danmu/post")
+    @RequestMapping("/post")
     public Map<String,Object> post(@RequestBody Danmu danmu){
         return ResponseUtil.danmuSuccess(danmuService.post(danmu));
     }
 
-    @RequestMapping("/api/danmu/list")
+    @RequestMapping("/list")
     public Map<String,Object> list(@RequestParam  String videoId){
         return ResponseUtil.success(danmuService.getDanmuListByVideoId(videoId));
     }
