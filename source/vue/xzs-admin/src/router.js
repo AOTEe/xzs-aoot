@@ -176,6 +176,36 @@ const constantRoutes = [
     ]
   },
   {
+    path: '/video',
+    component: Layout,
+    name: 'VideoPage',
+    meta: {
+      title: '视频管理',
+      icon: 'video'
+    },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'category',
+        component: () => import('@/views/video/category'),
+        name: 'VideoCategoryPage',
+        meta: { title: '视频分区管理', noCache: true }
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/video/list'),
+        name: 'VideoListPage',
+        meta: { title: '视频列表', noCache: true }
+      },
+      {
+        path: 'upload',
+        component: () => import('@/views/video/upload'),
+        name: 'VideoUploadPage',
+        meta: { title: '视频上传', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/education',
     component: Layout,
     name: 'EducationPage',

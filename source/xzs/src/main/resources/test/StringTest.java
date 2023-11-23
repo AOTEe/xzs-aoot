@@ -1,4 +1,8 @@
+import com.mindskip.xzs.utility.StringUtil;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StringTest {
     @Test
@@ -9,5 +13,14 @@ public class StringTest {
             value = value.replaceFirst("#_#","<span class=\"gapfilling-span \">"+(i+1)+"</span>");
         }
         System.out.println(value);
+    }
+
+    @Test
+    public void test02(){
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+
+        System.out.println(StringUtil.list2String(list,","));
     }
 }

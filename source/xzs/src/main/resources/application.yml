@@ -51,7 +51,7 @@ system:
     url: http://xzs.file.mindskip.net
     bucket: mindskip
     access-key: KabOBTPGVll2sSV8d1OIlW8G4_n_cReE7RSsLafA
-    secret-key: mSltk9_9KtCdFetCmxvvCAgsBg8JZHiXMuQeqSJA
+    secret-key: mSltk9_9KtCdFetCmxvvCAgsBg8JZHiXMuQeqSJApo
 
 
 #mybatis page helper
@@ -79,3 +79,12 @@ spring:
       static-path-pattern: /static/**
   resources:
     static-locations: classpath:/
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: -1
+      max-request-size: -1
+
+fileUpload:
+  video:

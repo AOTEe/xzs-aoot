@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import CardList from "./CardList";
+import CardList from "./cardList";
 
 export default {
   name: "Card",

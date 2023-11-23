@@ -9,7 +9,7 @@ module.exports = {
   publicPath: './',
   outputDir: 'admin',
   assetsDir: 'static',
-  lintOnSave: true,
+  lintOnSave: false,
   productionSourceMap: false,
   devServer: {
     open: true,
@@ -21,7 +21,11 @@ module.exports = {
       '/api': {
         target: 'http://localhost:8000',
         changeOrigin: true
-      }
+      },
+      '/static': {
+        target: 'http://localhost:8000',
+        changeOrigin: true
+      },
     }
   },
   pages: {

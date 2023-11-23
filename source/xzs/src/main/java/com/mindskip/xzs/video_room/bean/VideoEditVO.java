@@ -1,7 +1,8 @@
 package com.mindskip.xzs.video_room.bean;
 
-public class Video {
+import java.util.List;
 
+public class VideoEditVO {
     private String id;
     private String publisher;
     private String publishTime;
@@ -11,11 +12,7 @@ public class Video {
     private String cover;//封面地址
     private String type;//1自制、2转载
     private String category;//分区
-    private String tags;
-    private int likesNum = 0;
-    private int viewsNum = 0;
-    private int collectionsNum = 0;
-
+    private List<String> tags;
 
     public String getId() {
         return id;
@@ -65,30 +62,6 @@ public class Video {
         this.path = path;
     }
 
-    public int getLikesNum() {
-        return likesNum;
-    }
-
-    public void setLikesNum(int likesNum) {
-        this.likesNum = likesNum;
-    }
-
-    public int getViewsNum() {
-        return viewsNum;
-    }
-
-    public void setViewsNum(int viewsNum) {
-        this.viewsNum = viewsNum;
-    }
-
-    public int getCollectionsNum() {
-        return collectionsNum;
-    }
-
-    public void setCollectionsNum(int collectionsNum) {
-        this.collectionsNum = collectionsNum;
-    }
-
     public String getCover() {
         return cover;
     }
@@ -113,11 +86,11 @@ public class Video {
         this.category = category;
     }
 
-    public String getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 }

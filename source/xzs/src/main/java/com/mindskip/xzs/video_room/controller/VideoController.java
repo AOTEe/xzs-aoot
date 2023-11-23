@@ -1,15 +1,19 @@
 package com.mindskip.xzs.video_room.controller;
 
 
+import com.mindskip.xzs.base.BaseApiController;
+import com.mindskip.xzs.domain.User;
+import com.mindskip.xzs.utility.Response;
 import com.mindskip.xzs.utility.ResponseUtil;
+import com.mindskip.xzs.video_room.bean.Video;
+import com.mindskip.xzs.video_room.bean.VideoCategory;
+import com.mindskip.xzs.video_room.bean.VideoEditVO;
 import com.mindskip.xzs.video_room.service.VideoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +22,7 @@ import java.util.Base64;
 import java.util.Map;
 
 @Controller
-public class VideoController {
+public class VideoController  extends BaseApiController {
 
 
     @Autowired
@@ -116,6 +120,40 @@ public class VideoController {
 
 
         return ResponseUtil.success(videoService.videoRelation(videoId,userId));
+    }
+
+    @RequestMapping("/api/admin/video/saveCategory")
+    @ResponseBody
+    public Response saveCategory(@RequestBody VideoCategory category){
+
+        return ResponseUtil.responseSuccess(videoService.saveCategory(category));
+    }
+
+    @RequestMapping("/api/admin/video/categoryList")
+    @ResponseBody
+    public Response categoryList(){
+
+        return ResponseUtil.responseSuccess(videoService.categoryList());
+    }
+
+    @ResponseBody
+    @RequestMapping("/api/admin/video/upload")
+    public Response upload(MultipartFile file){
+        return ResponseUtil.responseSuccess(videoService.upload(file));
+    }
+
+    @ResponseBody
+    @RequestMapping("/api/admin/video/save")
+    public Response save(VideoEditVO video){
+        User currentUser = getCurrentUser();
+        videoService.save(video,currentUser);
+        return ResponseUtil.responseSuccess();
+    }
+
+    @ResponseBody
+    @RequestMapping("/api/admin/video/coverUpload")
+    public Response coverUpload(MultipartFile file){
+        return ResponseUtil.responseSuccess(videoService.coverUpload(file));
     }
 }
 

@@ -95,6 +95,28 @@
         update t_video set likes_num = #{num} where id =#{videoId}
     </update>
 
+    <insert id="insertCategory" >
+        insert t_video_category
+        (id,`name`,create_time,update_time)
+        value (#{id},#{name},#{createTime},#{updateTime})
+    </insert>
+    <update id="updateCategory" >
+        update t_video_category set `name`=#{name},`update_time`=#{updateTime}
+        where id=#{id}
+    </update>
 
+    <select id="categoryList" resultType="com.mindskip.xzs.video_room.bean.VideoCategory">
+        select * from   t_video_category
+    </select>
+
+    <insert id="save" >
+        insert t_video
+        (id,publisher,publish_time,title,introduction,`path`,cover,
+        `type`,category,tags,
+        likes_num,views_num,collections_num)
+        value (#{id},#{publisher},#{publishTime},#{title},#{introduction},#{path},#{cover},
+        #{type},#{category},#{tags},
+        #{likesNum},#{viewsNum},#{collectionsNum})
+    </insert>
 
 </mapper>

@@ -154,4 +154,15 @@ public class DateTimeUtil {
         }
         return list;
     }
+
+    /**
+     * 获取Date的年份
+     * @param date
+     * @return
+     */
+    public static String year(Date date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
+        String year = simpleDateFormat.format(date);
+        return year;
+    }
 }

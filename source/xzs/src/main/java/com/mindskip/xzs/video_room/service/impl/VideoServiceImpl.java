@@ -7,21 +7,22 @@ import com.mindskip.xzs.message_center.service.LikeService;
 import com.mindskip.xzs.redis.RedisUtil;
 import com.mindskip.xzs.service.TagService;
 import com.mindskip.xzs.service.UserService;
+import com.mindskip.xzs.utility.DateTimeUtil;
 import com.mindskip.xzs.utility.JsonUtil;
-import com.mindskip.xzs.video_room.bean.Video;
-import com.mindskip.xzs.video_room.bean.VideoRelationVO;
-import com.mindskip.xzs.video_room.bean.VideoVO;
+import com.mindskip.xzs.utility.StringUtil;
+import com.mindskip.xzs.video_room.bean.*;
 import com.mindskip.xzs.video_room.repository.VideoMapper;
 import com.mindskip.xzs.video_room.service.VideoService;
+import com.mindskip.xzs.video_room.util.VideoUtil;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 @Service
 public class VideoServiceImpl implements VideoService {
@@ -37,6 +38,11 @@ public class VideoServiceImpl implements VideoService {
     RedisUtil redisUtil;
     @Autowired
     LikeService likeService;
+
+
+    private static final String VIDEO_UPLOAD_PATH = "/static/video/"+DateTimeUtil.year(new Date())+"/";
+
+    private static final String IMAGE_UPLOAD_PATH = "/static/image/"+DateTimeUtil.year(new Date())+"/";
 
     @Override
     public VideoVO getVideoVO(String videoId) {
@@ -116,4 +122,92 @@ public class VideoServiceImpl implements VideoService {
         relationVO.setFavorite(favorite);
         return relationVO;
     }
+
+
+    public VideoCategory saveCategory(VideoCategory category){
+        String time = DateTimeUtil.dateFormat(new Date());
+        if (StringUtils.isEmpty(category.getId())){
+            category.setId(String.valueOf(UUID.randomUUID()));
+            category.setName(category.getName());
+            category.setCreateTime(time);
+            category.setUpdateTime(time);
+            //insert
+            videoMapper.insertCategory(category);
+        }else {
+            category.setUpdateTime(time);
+            category.setName(category.getName());
+            //update
+            videoMapper.updateCategory(category);
+        }
+        return category;
+    }
+
+    @Override
+    public List<VideoCategory> categoryList() {
+
+        List<VideoCategory> categories = videoMapper.categoryList();
+        return categories;
+    }
+
+    @Override
+    public Video upload(MultipartFile file){
+
+        String originalFileName = file.getOriginalFilename();
+        String systemPath = this.getClass().getResource("/").getPath();
+        String fileUrl = VIDEO_UPLOAD_PATH + UUID.randomUUID() + originalFileName.substring(originalFileName.lastIndexOf("."));
+        System.out.println(fileUrl);
+        File localFile = new File(systemPath + fileUrl);
+        File parentFile = localFile.getParentFile();
+        if (!parentFile.exists())
+            parentFile.mkdirs();
+        try {
+            file.transferTo(localFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //获取视频第一帧作为封面
+        String coverUrl = IMAGE_UPLOAD_PATH + UUID.randomUUID() + ".jpg";
+        VideoUtil.getVideoPicture(systemPath + fileUrl, systemPath + coverUrl);
+        Video video = new Video();
+        video.setPath(fileUrl);
+        video.setCover(coverUrl);
+        return video;
+    }
+
+    @Override
+    public void save(VideoEditVO videoEditVO,User user){
+        Video  video = new Video();
+        video.setId(UUID.randomUUID().toString());
+        video.setPublisher(user.getId());
+        video.setPublishTime(DateTimeUtil.dateFormat(new Date()));
+        video.setTitle(videoEditVO.getTitle());
+        video.setIntroduction(videoEditVO.getIntroduction());
+        video.setPath(videoEditVO.getPath());
+        video.setCover(videoEditVO.getCover());
+        video.setType(videoEditVO.getType());
+        video.setCategory(videoEditVO.getCategory());
+        video.setTags(StringUtil.list2String(videoEditVO.getTags(),","));
+
+        videoMapper.save(video);
+    }
+
+    @Override
+    public String coverUpload(MultipartFile file){
+        String originalFileName = file.getOriginalFilename();
+        String systemPath = this.getClass().getResource("/").getPath();
+        String fileUrl = IMAGE_UPLOAD_PATH + UUID.randomUUID() + originalFileName.substring(originalFileName.lastIndexOf("."));
+        System.out.println(fileUrl);
+        File localFile = new File(systemPath + fileUrl);
+        File parentFile = localFile.getParentFile();
+        if (!parentFile.exists())
+            parentFile.mkdirs();
+        try {
+            file.transferTo(localFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileUrl;
+    }
+
 }
