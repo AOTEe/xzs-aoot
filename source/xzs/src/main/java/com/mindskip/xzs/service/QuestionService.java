@@ -26,4 +26,6 @@ public interface QuestionService extends BaseService<Question> {
     List<Integer> selectMothCount();
 
     void batchImportQuestionFromExcel(File file, User user);
+
+     List<Question> queryQuestionsBySubjectAndPoints(Integer type,String subjectId,List<String> points);
 }

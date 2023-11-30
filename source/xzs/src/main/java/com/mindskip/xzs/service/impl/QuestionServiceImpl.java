@@ -374,11 +374,11 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
                     }else if (j==5){
                         String all_tag_id ="";
                         String all_tag_name = "";
-                        String[] tagsArr = value.split("、");
+                        String[] tagsArr = value.split(",");
                         for (String tagName : tagsArr) {
                             if (tagMap.containsKey(tagName)){
                                 Tag tag = tagMap.get(tagName);
-                                all_tag_id = all_tag_id + tag.getTagId()+"、";
+                                all_tag_id = all_tag_id + tag.getTagId()+",";
                             }
                             else {//创建数据库插入新的tag对象
                                 Tag tag = new Tag();
@@ -388,7 +388,7 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
                                 tag.setTagName(tagName);
                                 tagMap.put(tagName,tag);
                                 tagService.insert(tag);
-                                all_tag_id = all_tag_id + tag.getTagId()+"、";
+                                all_tag_id = all_tag_id + tag.getTagId()+",";
                             }
                         }
                         if (all_tag_id.length()>1)
@@ -416,5 +416,20 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         }
     }
 
+    /**
+     *
+     * @param type  试题类型:可为null
+     * @param subjectId 学科ID
+     * @param points   知识点ID列表
+     * @return
+     */
+    @Override
+    public List<Question> queryQuestionsBySubjectAndPoints(Integer type,String subjectId,List<String> points){
+        // 一道题有多个知识点，数据库总用,分割
+        // tags like '' or tags like
+        List<Question> questionList = questionMapper.queryQuestionsBySubjectAndPoints(type,subjectId, points);
+        return questionList;
+
+    }
 
 }

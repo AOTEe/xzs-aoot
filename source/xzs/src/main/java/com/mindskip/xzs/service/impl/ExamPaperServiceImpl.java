@@ -14,6 +14,10 @@ import com.mindskip.xzs.service.SubjectService;
 import com.mindskip.xzs.service.TextContentService;
 import com.mindskip.xzs.service.enums.ActionEnum;
 import com.mindskip.xzs.utility.*;
+import com.mindskip.xzs.utility.ga.GA;
+import com.mindskip.xzs.utility.ga.Paper;
+import com.mindskip.xzs.utility.ga.PaperRule;
+import com.mindskip.xzs.utility.ga.Population;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperPageRequestVM;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperTitleItemVM;
@@ -47,6 +51,8 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
     private final QuestionService questionService;
     private final SubjectService subjectService;
 
+    @Autowired
+    GA gaImpl;
     @Autowired
     public ExamPaperServiceImpl(ExamPaperMapper examPaperMapper, QuestionMapper questionMapper, TextContentService textContentService, QuestionService questionService, SubjectService subjectService) {
         super(examPaperMapper);
@@ -209,5 +215,38 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             titleItem.setQuestionItems(questionItems);
             return titleItem;
         }).collect(Collectors.toList());
+    }
+
+    /**
+     * 自动组卷(遗传算法)
+     * @param paperRule
+     */
+    public void autoGeneratePaper(PaperRule paperRule){
+
+        Paper finalPaper = null;
+        // 迭代计数器
+        int count = 0;
+        int runCount = 100;
+        // 适应度期望值
+        double expand = 0.98;
+        if (paperRule!=null){
+            //初始化种群
+            Population population = gaImpl.initPopulation(20, true, paperRule);
+            System.out.println("初次适应度  " + population.getFitness().getAdaptationDegree());
+            while (count < runCount && population.getFitness().getAdaptationDegree() < expand) {
+                count++;
+                population = gaImpl.evolvePopulation(population, paperRule);
+                System.out.println("第 " + count + " 次进化，适应度为： " + population.getFitness().getAdaptationDegree());
+            }
+            System.out.println("进化次数： " + count);
+            System.out.println(population.getFitness().getAdaptationDegree());
+            finalPaper = population.getFitness();
+            while (count < runCount && population.getFitness().getAdaptationDegree() < expand ){
+                count ++ ;
+
+            }
+        }
+        System.out.println(finalPaper);
+
     }
 }

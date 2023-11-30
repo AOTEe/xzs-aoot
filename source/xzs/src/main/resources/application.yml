@@ -31,6 +31,7 @@ system:
     - /api/wx/**
     - /api/admin/upload/configAndUpload
     - /api/admin/upload/auth
+    - /api/admin/exam/paper/autoGenerate
     - /api/student/user/register
     - /chatWebSocket
     - /onlineViewsWebSocket

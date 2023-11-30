@@ -23,4 +23,6 @@ public interface QuestionMapper extends BaseMapper<Question> {
     List<String> selectQuestionByCondition(Question question);
 
     Integer selectCountByCondition(Question question);
+
+    List<Question> queryQuestionsBySubjectAndPoints(Integer type,String subjectId,List<String> points);
 }

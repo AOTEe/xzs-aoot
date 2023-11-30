@@ -284,4 +284,16 @@
     </where>
   </select>
 
+  <select id="queryQuestionsBySubjectAndPoints" resultMap="BaseResultMap">
+    select * from  t_question where subject_id = #{subjectId}
+    and
+    (
+    <foreach collection="points" item="point" separator="or">
+      tags like concat('%',#{point},'%')
+    </foreach>
+    )
+    <if test="type != null ">
+      and question_type= #{type}
+    </if>
+  </select>
 </mapper>
