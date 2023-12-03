@@ -32,4 +32,15 @@ public class StringUtil {
         List<String> list = new ArrayList<>(Arrays.asList(strings));
         return list;
     }
+
+    /**
+     * 字符串判空
+     * @param str
+     * @return
+     */
+    public static boolean isNull(String str) {
+        if (str == null || "".equals(str))
+            return true;
+        return false;
+    }
 }

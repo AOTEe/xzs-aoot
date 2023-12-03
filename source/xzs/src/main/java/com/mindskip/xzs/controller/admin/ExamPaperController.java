@@ -6,6 +6,7 @@ import com.mindskip.xzs.domain.ExamPaper;
 import com.mindskip.xzs.service.ExamPaperService;
 import com.mindskip.xzs.utility.DateTimeUtil;
 import com.mindskip.xzs.utility.PageInfoHelper;
+import com.mindskip.xzs.utility.ga.PaperRule;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperPageRequestVM;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamResponseVM;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController("AdminExamPaperController")
 @RequestMapping(value = "/api/admin/exam/paper")
@@ -70,6 +73,13 @@ public class ExamPaperController extends BaseApiController {
         ExamPaper examPaper = examPaperService.selectById(id);
         examPaper.setDeleted(true);
         examPaperService.updateByIdFilter(examPaper);
+        return RestResponse.ok();
+    }
+
+    @RequestMapping(value = "/autoGenerate", method = RequestMethod.POST)
+    public RestResponse autoGenerate(@RequestBody PaperRule paperRule){
+
+        examPaperService.autoGeneratePaper(paperRule);
         return RestResponse.ok();
     }
 }

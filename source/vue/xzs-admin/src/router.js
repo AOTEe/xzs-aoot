@@ -109,6 +109,12 @@ const constantRoutes = [
         hidden: true
       },
       {
+        path: 'paper/autoGenerate',
+        component: () => import('@/views/exam/paper/autoGenerate'),
+        name: 'PaperAutoGenerate',
+        meta: { title: '自动组卷', noCache: true }
+      },
+      {
         path: 'question/list',
         component: () => import('@/views/exam/question/list'),
         name: 'ExamQuestionPageList',

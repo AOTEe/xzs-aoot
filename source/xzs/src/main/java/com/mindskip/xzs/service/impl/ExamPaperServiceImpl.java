@@ -31,10 +31,13 @@ import com.mindskip.xzs.domain.ExamPaper;
 import com.mindskip.xzs.domain.Question;
 import com.mindskip.xzs.domain.User;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sound.sampled.Line;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +46,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements ExamPaperService {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(ExamPaperServiceImpl.class);
+
 
     protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
     private final ExamPaperMapper examPaperMapper;
@@ -232,13 +239,13 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         if (paperRule!=null){
             //初始化种群
             Population population = gaImpl.initPopulation(20, true, paperRule);
-            System.out.println("初次适应度  " + population.getFitness().getAdaptationDegree());
+            logger.info("【遗传算法组卷】初始种群最佳适应度为:{}",population.getFitness().getAdaptationDegree());
             while (count < runCount && population.getFitness().getAdaptationDegree() < expand) {
                 count++;
                 population = gaImpl.evolvePopulation(population, paperRule);
-                System.out.println("第 " + count + " 次进化，适应度为： " + population.getFitness().getAdaptationDegree());
+                logger.info("【遗传算法组卷】第{}次进化，种群最佳适应度为:{}",count,population.getFitness().getAdaptationDegree());
             }
-            System.out.println("进化次数： " + count);
+            logger.info("【遗传算法组卷】进化次数:{},最终种群最佳适应度为:{}",count,population.getFitness().getAdaptationDegree());
             System.out.println(population.getFitness().getAdaptationDegree());
             finalPaper = population.getFitness();
             while (count < runCount && population.getFitness().getAdaptationDegree() < expand ){

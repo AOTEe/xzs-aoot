@@ -34,6 +34,11 @@ public class Paper {
      */
     private List<Question> questions = new ArrayList<>();
 
+    /**
+     * 试题ID和questionTypeItem的映射关系
+     */
+    private Map<String,QuestionTypeItem> typeRelation = new HashMap<>();
+
     public Paper(){
 
     }
@@ -134,20 +139,22 @@ public class Paper {
      *
      * @param question
      */
-    public void addQuestion(int index, Question question) {
+    public void addQuestion(int index, Question question,QuestionTypeItem questionTypeItem) {
         this.questions.set(index, question);
         this.totalScore = 0;
         this.adaptationDegree = 0;
         this.difficulty = 0;
         this.kpCoverage = 0;
+        addTypeRelation(question.getId(),questionTypeItem);
     }
 
-    public void addQuestion(Question question) {
+    public void addQuestion(Question question,QuestionTypeItem questionTypeItem) {
         this.questions.add(question);
         this.totalScore = 0;
         this.adaptationDegree = 0;
         this.difficulty = 0;
         this.kpCoverage = 0;
+        addTypeRelation(question.getId(),questionTypeItem);
     }
 
     public Question getQuestion(int index) {
@@ -192,5 +199,22 @@ public class Paper {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public int getTypeRelationSize(){
+        return typeRelation.size();
+    }
+
+    public QuestionTypeItem getTypeRelation(String questionId) {
+        return typeRelation.get(questionId);
+    }
+
+    public void addTypeRelation(String questionId, QuestionTypeItem item) {
+        this.typeRelation.put(questionId, item);
+    }
+
+
+    public void removeTypeRelation(String questionId) {
+        this.typeRelation.remove(questionId);
     }
 }

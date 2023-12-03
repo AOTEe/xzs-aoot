@@ -6,6 +6,7 @@ import com.mindskip.xzs.bean.Org;
 import com.mindskip.xzs.domain.Tag;
 import com.mindskip.xzs.repository.TagMapper;
 import com.mindskip.xzs.service.TagService;
+import com.mindskip.xzs.utility.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,10 @@ public class TagServiceImpl implements TagService {
     public Map<String,Object>  list(Tag tag) {
 
 
-        PageHelper.startPage(tag.getPageIndex(),tag.getPageSize());
+        //没有分页index,size查全部
+        if (tag.getPageIndex()!=null&&tag.getPageSize()!=null){
+            PageHelper.startPage(tag.getPageIndex(),tag.getPageSize());
+        }
 
         //数据集合
         List<Tag> tagList =  tagMapper.list(tag);
