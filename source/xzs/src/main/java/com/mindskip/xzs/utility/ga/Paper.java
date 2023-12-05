@@ -209,6 +209,9 @@ public class Paper {
         return typeRelation.get(questionId);
     }
 
+    public Map<String,QuestionTypeItem> getTypeRelation(){
+        return typeRelation;
+    }
     public void addTypeRelation(String questionId, QuestionTypeItem item) {
         this.typeRelation.put(questionId, item);
     }

@@ -30,5 +30,5 @@ public interface ExamPaperService extends BaseService<ExamPaper> {
 
     List<Integer> selectMothCount();
 
-    void autoGeneratePaper(PaperRule rule);
+    ExamPaperEditRequestVM autoGeneratePaper(PaperRule rule);
 }

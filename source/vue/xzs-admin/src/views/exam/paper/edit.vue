@@ -104,6 +104,7 @@ import Pagination from '@/components/Pagination'
 import QuestionShow from '../question/components/Show'
 import examPaperApi from '@/api/examPaper'
 import questionApi from '@/api/question'
+import commonRequest from "@/api/commonRequest";
 
 export default {
   components: { Pagination, QuestionShow },
@@ -119,6 +120,7 @@ export default {
         suggestTime: null,
         titleItems: []
       },
+      generateJson : null,
       subjectFilter: null,
       formLoading: false,
       rules: {
@@ -168,6 +170,13 @@ export default {
         _this.formLoading = false
       })
     }
+    //自动组卷来的
+    console.log("路由参数....")
+    if(this.$route.query!=null){
+      this.generateJson = this.$route.query.paperJson
+      this.generate()
+    }
+    console.log(this.$route.query)
   },
   methods: {
     submitForm () {
@@ -256,6 +265,13 @@ export default {
     },
     subjectFormatter (row, column, cellValue, index) {
       return this.subjectEnumFormat(cellValue)
+    },
+    generate(){
+       commonRequest.postApi("/api/admin/exam/paper/autoGenerate",JSON.parse(this.generateJson)).then( res =>{
+         console.log("试卷结果")
+         console.log(res)
+         this.form = res.response
+       })
     },
     resetForm () {
       let lastId = this.form.id

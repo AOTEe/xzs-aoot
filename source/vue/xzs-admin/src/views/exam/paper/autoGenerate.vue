@@ -137,9 +137,15 @@ export default {
       }
     },
     generate(){
-      commonRequest.postApi("/api/admin/exam/paper/autoGenerate",this.form).then( res =>{
-        console.log(res)
+      this.$router.push({
+        name:'ExamPaperEdit',
+        query:{
+          paperJson : JSON.stringify(this.form)
+        }
       })
+      // commonRequest.postApi("/api/admin/exam/paper/autoGenerate",this.form).then( res =>{
+      //   console.log(res)
+      // })
     },
     ...mapActions('exam', {initSubject: 'initSubject'}),
   }

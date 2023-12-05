@@ -14,10 +14,7 @@ import com.mindskip.xzs.service.SubjectService;
 import com.mindskip.xzs.service.TextContentService;
 import com.mindskip.xzs.service.enums.ActionEnum;
 import com.mindskip.xzs.utility.*;
-import com.mindskip.xzs.utility.ga.GA;
-import com.mindskip.xzs.utility.ga.Paper;
-import com.mindskip.xzs.utility.ga.PaperRule;
-import com.mindskip.xzs.utility.ga.Population;
+import com.mindskip.xzs.utility.ga.*;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperPageRequestVM;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperTitleItemVM;
@@ -38,9 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sound.sampled.Line;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -228,7 +223,7 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
      * 自动组卷(遗传算法)
      * @param paperRule
      */
-    public void autoGeneratePaper(PaperRule paperRule){
+    public ExamPaperEditRequestVM autoGeneratePaper(PaperRule paperRule){
 
         Paper finalPaper = null;
         // 迭代计数器
@@ -253,7 +248,40 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
 
             }
         }
+        //将最总的paper转换成试卷编辑页面需要的数据结构
         System.out.println(finalPaper);
+        ExamPaperEditRequestVM examPaperEditRequestVM = paperToEditVm(finalPaper, paperRule);
+        return examPaperEditRequestVM;
+
+    }
+
+    private ExamPaperEditRequestVM paperToEditVm(Paper paper , PaperRule rule){
+
+        //将questions对应到rule的questionItem中
+        List<Question> questions = paper.getQuestions();
+        List<ExamPaperTitleItemVM> titleItems = new ArrayList<>();
+
+        QuestionTypeItem[] questionTypeItems = rule.getQuestionTypeItems();
+        for (QuestionTypeItem questionTypeItem : questionTypeItems) {
+            ExamPaperTitleItemVM titleItem = new ExamPaperTitleItemVM();
+            titleItem.setQuestionType(questionTypeItem.getQuestionType());
+            List<QuestionEditRequestVM> questionEdits = new ArrayList<>();
+            for (Question question : questions) {
+                //小题找寻所属大题
+                if (paper.getTypeRelation(question.getId()).equals(questionTypeItem)){
+                    QuestionEditRequestVM questionEditRequestVM = questionService.getQuestionEditRequestVM(question);
+                    questionEdits.add(questionEditRequestVM);
+                }
+            }
+            titleItem.setQuestionItems(questionEdits);
+            titleItems.add(titleItem);
+        }
+
+        ExamPaperEditRequestVM examPaperEdit = new ExamPaperEditRequestVM();
+        examPaperEdit.setSubjectId(rule.getSubjectId());
+        examPaperEdit.setTitleItems(titleItems);
+
+        return examPaperEdit;
 
     }
 }

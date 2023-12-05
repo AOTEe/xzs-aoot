@@ -79,7 +79,7 @@ public class ExamPaperController extends BaseApiController {
     @RequestMapping(value = "/autoGenerate", method = RequestMethod.POST)
     public RestResponse autoGenerate(@RequestBody PaperRule paperRule){
 
-        examPaperService.autoGeneratePaper(paperRule);
-        return RestResponse.ok();
+        ExamPaperEditRequestVM examPaperEditRequestVM = examPaperService.autoGeneratePaper(paperRule);
+        return RestResponse.ok(examPaperEditRequestVM);
     }
 }
