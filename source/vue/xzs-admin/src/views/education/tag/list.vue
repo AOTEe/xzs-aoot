@@ -4,6 +4,9 @@
       <el-form-item label="所属学科：">
         <el-input v-model="queryParam.subjectName"></el-input>
       </el-form-item>
+      <el-form-item label="知识点：">
+        <el-input v-model="queryParam.tagName"></el-input>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm">查询</el-button>
         <router-link :to="{path:'/education/tag/edit'}" class="link-left">
@@ -42,6 +45,8 @@ export default {
       queryParam: {
         subjectId: null,
         subjectName: null,
+        tagId : null,
+        tagName : null,
         pageIndex: 1,
         pageSize: 10
       },

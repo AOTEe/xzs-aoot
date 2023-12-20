@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="form" ref="form" label-width="100px" v-loading="formLoading"  :rules="rules">
       <el-form-item label="学科：" prop="subjectId" required>
-        <el-select v-model="form.subjectId" placeholder="学科" >
+        <el-select v-model="form.subjectId" placeholder="学科" @change="handleSubjectChange" >
           <el-option v-for="item in subjectFilter" :key="item.id" :value="item.id" :label="item.name"></el-option>
         </el-select>
       </el-form-item>
@@ -30,9 +30,9 @@
         <el-input v-model="form.analyze"  @focus="inputClick(form,'analyze')" />
       </el-form-item>
 <!--      不要分数-->
-<!--      <el-form-item label="分数：" prop="score" required>-->
-<!--        <el-input-number v-model="form.score" :precision="1" :step="1" :max="100"></el-input-number>-->
-<!--      </el-form-item>-->
+      <el-form-item label="分数：" prop="score" required>
+        <el-input-number v-model="form.score" :precision="1" :step="1" :max="100"></el-input-number>
+      </el-form-item>
       <el-form-item label="难度：" required>
         <el-rate v-model="form.difficult" class="question-item-rate"></el-rate>
       </el-form-item>
@@ -180,6 +180,10 @@ export default {
           this.queryTags = re.data.list
         })
       }
+    },
+    handleSubjectChange(){
+      this.tagQueryParam.subjectId = this.form.subjectId
+      this.doQueryTag()
     }
     ,
     editorReady (instance) {
