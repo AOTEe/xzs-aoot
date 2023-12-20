@@ -123,7 +123,7 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
     public ExamPaperEditRequestVM examPaperToVM(String id) {
         ExamPaper examPaper = examPaperMapper.selectByPrimaryKey(id);
         ExamPaperEditRequestVM vm = modelMapper.map(examPaper, ExamPaperEditRequestVM.class);
-        vm.setLevel(examPaper.getGradeLevel());
+        //vm.setLevel(examPaper.getGradeLevel());
         TextContent frameTextContent = textContentService.selectById(examPaper.getFrameTextContentId());
         List<ExamPaperTitleItemObject> examPaperTitleItemObjects = JsonUtil.toJsonListObject(frameTextContent.getContent(), ExamPaperTitleItemObject.class);
 
@@ -137,14 +137,16 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         //
         List<ExamPaperTitleItemVM> examPaperTitleItemVMS = examPaperTitleItemObjects.stream().map(t -> {//遍历examPaperTitleItemObjects
             ExamPaperTitleItemVM tTitleVM = modelMapper.map(t, ExamPaperTitleItemVM.class);
+            //每一个大题(examPaperTitleItemObjects)中有多个小题
             List<QuestionEditRequestVM> questionItemsVM = t.getQuestionItems().stream().map(i -> {
-                // i:examPaperTitleItemObjects每一项中的questionItems(有多个examPaperQuestionItemObject)
 //                Question question = new Question();
 //                for (Question questionItem : questions) {
 //                    if (questionItem.getId().equals(i.getId()))
 //                        question = questionItem;
 //                }
                 //效果同上
+                // i:examPaperTitleItemObjects每一项中的questionItems(有多个examPaperQuestionItemObject)
+                // 将题目对应到各自的大题中
                 Question question = questions.stream().filter(q -> q.getId().equals(i.getId())).findFirst().get();
                 QuestionEditRequestVM questionEditRequestVM = questionService.getQuestionEditRequestVM(question);
                 questionEditRequestVM.setItemOrder(i.getItemOrder());

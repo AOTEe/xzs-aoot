@@ -50,6 +50,11 @@ public class ExamPaperQuestionCustomerAnswer implements Serializable {
     private String questionTextContentId;
 
     /**
+     * 问题内容(文本)
+     */
+    private String questionTextContent;
+
+    /**
      * 做题答案
      */
     private String answer;
@@ -135,6 +140,14 @@ public class ExamPaperQuestionCustomerAnswer implements Serializable {
 
     public void setQuestionScore(Integer questionScore) {
         this.questionScore = questionScore;
+    }
+
+    public String getQuestionTextContent() {
+        return questionTextContent;
+    }
+
+    public void setQuestionTextContent(String questionTextContent) {
+        this.questionTextContent = questionTextContent;
     }
 
     public String getQuestionTextContentId() {

@@ -3,7 +3,7 @@ import userApi from '@/api/user'
 // initial state
 const state = {
   userName: Cookies.get('studentUserName'),
-  userInfo: JSON.parse(Cookies.get('studentUserInfo')),
+  //userInfo: JSON.parse(Cookies.get('studentUserInfo')),
   imagePath: Cookies.get('studentImagePath'),
   messageCount: 0
 }

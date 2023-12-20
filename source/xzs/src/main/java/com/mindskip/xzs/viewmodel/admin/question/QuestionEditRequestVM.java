@@ -20,9 +20,9 @@ public class QuestionEditRequestVM {
 
     private Integer gradeLevel;
 
-    private String tags;
+    private List<String> tags;
 
-    private String tagsName;
+    private List<String> tagsName;
 
     @Valid
     private List<QuestionEditItemVM> items;
@@ -32,7 +32,7 @@ public class QuestionEditRequestVM {
     private List<String> correctArray;
 
     private String correct;
-    @NotBlank
+
     private String score;
 
     @Range(min = 1, max = 5, message = "请选择题目难度")
@@ -136,19 +136,19 @@ public class QuestionEditRequestVM {
         this.itemOrder = itemOrder;
     }
 
-    public String getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
-    public String getTagsName() {
+    public List<String> getTagsName() {
         return tagsName;
     }
 
-    public void setTagsName(String tagsName) {
+    public void setTagsName(List<String> tagsName) {
         this.tagsName = tagsName;
     }
 }

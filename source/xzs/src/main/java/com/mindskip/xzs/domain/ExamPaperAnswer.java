@@ -73,6 +73,11 @@ public class ExamPaperAnswer implements Serializable {
 
     private String taskExamId;
 
+    /**
+     * Json字符串<=>List<ExamPaperQuestionCustomerAnswer>
+     */
+    private String answers ;
+
     public String getId() {
         return id;
     }
@@ -191,5 +196,13 @@ public class ExamPaperAnswer implements Serializable {
 
     public void setTaskExamId(String taskExamId) {
         this.taskExamId = taskExamId;
+    }
+
+    public String getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(String answers) {
+        this.answers = answers;
     }
 }

@@ -3,6 +3,7 @@ package com.mindskip.xzs.controller.admin;
 import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.domain.Tag;
 import com.mindskip.xzs.service.impl.TagServiceImpl;
+import com.mindskip.xzs.utility.Response;
 import com.mindskip.xzs.utility.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,9 @@ public class TagController extends BaseApiController {
     TagServiceImpl tagService;
 
     @RequestMapping("/tag/edit")
-    public void editOrg(){
-
+    public Response editOrg(@RequestBody Tag tag){
+        tagService.editTag(tag);
+        return ResponseUtil.responseSuccess();
     }
 
     @RequestMapping(value = "/tag/list", method = RequestMethod.POST)

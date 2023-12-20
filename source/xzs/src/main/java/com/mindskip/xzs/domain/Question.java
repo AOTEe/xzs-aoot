@@ -55,6 +55,11 @@ public class Question implements Serializable {
     private String infoTextContentId;
 
     /**
+     * 题目
+     */
+    private String infoTextContent;
+
+    /**
      * 创建人
      */
     private String createUser;
@@ -133,6 +138,14 @@ public class Question implements Serializable {
 
     public void setInfoTextContentId(String infoTextContentId) {
         this.infoTextContentId = infoTextContentId;
+    }
+
+    public String getInfoTextContent() {
+        return infoTextContent;
+    }
+
+    public void setInfoTextContent(String infoTextContent) {
+        this.infoTextContent = infoTextContent;
     }
 
     public String getCreateUser() {

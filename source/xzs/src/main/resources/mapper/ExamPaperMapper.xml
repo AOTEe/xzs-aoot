@@ -301,7 +301,6 @@
     <where>
       and deleted=0
       and paper_type= #{examPaperType}
-      and grade_level=#{gradeLevel}
       <if test="examPaperType == 3 ">
       </if>
       <if test="examPaperType == 4 ">

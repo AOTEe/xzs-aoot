@@ -92,9 +92,11 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         }
         String frameTextContent = textContentService.selectById(examPaper.getFrameTextContentId()).getContent();
         List<ExamPaperTitleItemObject> examPaperTitleItemObjects = JsonUtil.toJsonListObject(frameTextContent, ExamPaperTitleItemObject.class);
+        //获取试卷中的试题
         List<String> questionIds = examPaperTitleItemObjects.stream().flatMap(t -> t.getQuestionItems().stream().map(q -> q.getId())).collect(Collectors.toList());
         List<Question> questions = questionMapper.selectByIds(questionIds);
         //将题目结构的转化为题目答案
+        //一道题目对应一个ExamPaperQuestionCustomerAnswer对象
         List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers = examPaperTitleItemObjects.stream()
                 .flatMap(t -> t.getQuestionItems().stream()
                         .map(q -> {
@@ -107,7 +109,9 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
                         })
                 ).collect(Collectors.toList());
 
+        //保存各题目的作答信息
         ExamPaperAnswer examPaperAnswer = ExamPaperAnswerFromVM(examPaperSubmitVM, examPaper, examPaperQuestionCustomerAnswers, user, now);
+        examPaperAnswer.setAnswers(JsonUtil.toJsonStr(examPaperQuestionCustomerAnswers));
         examPaperAnswerInfo.setExamPaper(examPaper);
         examPaperAnswerInfo.setExamPaperAnswer(examPaperAnswer);
         examPaperAnswerInfo.setExamPaperQuestionCustomerAnswers(examPaperQuestionCustomerAnswers);
@@ -169,7 +173,9 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         examPaperSubmitVM.setId(examPaperAnswer.getId());
         examPaperSubmitVM.setDoTime(examPaperAnswer.getDoTime());
         examPaperSubmitVM.setScore(ExamUtil.scoreToVM(examPaperAnswer.getUserScore()));
-        List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers = examPaperQuestionCustomerAnswerService.selectListByPaperAnswerId(examPaperAnswer.getId());
+        String answersJson = examPaperAnswer.getAnswers();
+        List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers = JsonUtil.toJsonListObject(answersJson, ExamPaperQuestionCustomerAnswer.class);
+        //List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers = examPaperQuestionCustomerAnswerService.selectListByPaperAnswerId(examPaperAnswer.getId());
         List<ExamPaperSubmitItemVM> examPaperSubmitItemVMS = examPaperQuestionCustomerAnswers.stream()
                 .map(a -> examPaperQuestionCustomerAnswerService.examPaperQuestionCustomerAnswerToVM(a))
                 .collect(Collectors.toList());

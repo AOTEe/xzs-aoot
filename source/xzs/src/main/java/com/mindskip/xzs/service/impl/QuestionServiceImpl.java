@@ -86,6 +86,7 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         //题干、解析、选项等 插入
         TextContent infoTextContent = new TextContent();
         infoTextContent.setCreateTime(now);
+        infoTextContent.setId(UUID.randomUUID().toString());
         setQuestionInfoFromVM(infoTextContent, model);
         textContentService.insertByFilter(infoTextContent);
 
@@ -101,6 +102,7 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         question.setInfoTextContentId(infoTextContent.getId());
         question.setCreateUser(userId);
         question.setDeleted(false);
+        question.setId(UUID.randomUUID().toString());
         questionMapper.insertSelective(question);
         return question;
     }
@@ -115,8 +117,8 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         question.setScore(ExamUtil.scoreFromVM(model.getScore()));
         question.setDifficult(model.getDifficult());
         question.setCorrectFromVM(model.getCorrect(), model.getCorrectArray());
-        question.setTags(model.getTags());
-        question.setTagsName(model.getTagsName());
+        question.setTags(StringUtil.list2String(model.getTags(),",") );
+        question.setTagsName(StringUtil.list2String(model.getTagsName(),",") );
         questionMapper.updateByPrimaryKeySelective(question);
 
         //题干、解析、选项等 更新

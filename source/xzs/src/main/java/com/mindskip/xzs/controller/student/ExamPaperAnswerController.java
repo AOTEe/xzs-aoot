@@ -88,11 +88,11 @@ public class ExamPaperAnswerController extends BaseApiController {
         JSONObject data = new JSONObject();
         data.put("userEventLog",JsonUtil.toJsonStr(userEventLog));
         data.put("examPaperAnswerInfo",JsonUtil.toJsonStr(examPaperAnswerInfo));
-        rocketmqProducer.syncSendMessage(RocketmqProducer.TEST_TOPIC,"TEST: "+DateTimeUtil.dateFormat(new Date()));
-//        //计算后的试卷、试卷详细项的插入
-//        eventPublisher.publishEvent(new CalculateExamPaperAnswerCompleteEvent(examPaperAnswerInfo));
-//        //用户事件的插入
-//        eventPublisher.publishEvent(new UserEvent(userEventLog));
+        //rocketmqProducer.syncSendMessage(RocketmqProducer.TEST_TOPIC,"TEST: "+DateTimeUtil.dateFormat(new Date()));
+        //计算后的试卷、试卷详细项的插入
+        eventPublisher.publishEvent(new CalculateExamPaperAnswerCompleteEvent(examPaperAnswerInfo));
+        //用户事件的插入
+        eventPublisher.publishEvent(new UserEvent(userEventLog));
         return RestResponse.ok(scoreVm);
     }
 

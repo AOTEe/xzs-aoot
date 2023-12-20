@@ -15,4 +15,6 @@ public interface TagService extends BaseService<Tag> {
 
     List<Tag> getTagsByIds(String[] ids);
 
+     void editTag(Tag tag);
+
 }

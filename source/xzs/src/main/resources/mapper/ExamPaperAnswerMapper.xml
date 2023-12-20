@@ -21,7 +21,7 @@
   <sql id="Base_Column_List">
     id, exam_paper_id, paper_name, paper_type, subject_id, system_score, user_score,
     paper_score, question_correct, question_count, do_time, status, create_user, create_time,
-    task_exam_id
+    task_exam_id, answers
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -38,13 +38,14 @@
       paper_type, subject_id, system_score,
       user_score, paper_score, question_correct,
       question_count, do_time, status,
-      create_user, create_time, task_exam_id
+      create_user, create_time, task_exam_id ,answers
       )
     values (#{id,jdbcType=VARCHAR}, #{examPaperId,jdbcType=VARCHAR}, #{paperName,jdbcType=VARCHAR},
       #{paperType,jdbcType=INTEGER}, #{subjectId,jdbcType=VARCHAR}, #{systemScore,jdbcType=INTEGER},
       #{userScore,jdbcType=INTEGER}, #{paperScore,jdbcType=INTEGER}, #{questionCorrect,jdbcType=INTEGER},
       #{questionCount,jdbcType=INTEGER}, #{doTime,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
-      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{taskExamId,jdbcType=VARCHAR}
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{taskExamId,jdbcType=VARCHAR},
+      #{answers,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.mindskip.xzs.domain.ExamPaperAnswer" useGeneratedKeys="true" keyProperty="id">
@@ -95,6 +96,9 @@
       <if test="taskExamId != null">
         task_exam_id,
       </if>
+      <if test="answers != null">
+        answers,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -142,6 +146,9 @@
       <if test="taskExamId != null">
         #{taskExamId,jdbcType=VARCHAR},
       </if>
+      <if test="answers != null">
+        #{answers,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.mindskip.xzs.domain.ExamPaperAnswer">
@@ -188,6 +195,9 @@
       </if>
       <if test="taskExamId != null">
         task_exam_id = #{taskExamId,jdbcType=VARCHAR},
+      </if>
+      <if test="answers != null">
+        answers = #{answers,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}

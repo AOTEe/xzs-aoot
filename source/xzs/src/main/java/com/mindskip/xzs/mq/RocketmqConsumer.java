@@ -38,7 +38,7 @@ public class RocketmqConsumer implements RocketMQListener<String> , RocketMQPush
 
         //试卷入库
         System.out.println("入库成功");
-        int a = 10/0;
+        //int a = 10/0;
         //记录日志
         System.out.println("日志记录成功");
 

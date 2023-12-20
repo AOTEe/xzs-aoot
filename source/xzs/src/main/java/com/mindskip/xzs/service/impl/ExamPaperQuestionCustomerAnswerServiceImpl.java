@@ -97,9 +97,8 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl extends BaseServiceImpl<
                 examPaperSubmitItemVM.setContentArray(ExamUtil.contentToArray(examPaperQuestionCustomerAnswer.getAnswer()));
                 break;
             case GapFilling:
-                TextContent textContent = textContentService.selectById(examPaperQuestionCustomerAnswer.getTextContentId());
-                List<String> correctAnswer = JsonUtil.toJsonListObject(textContent.getContent(), String.class);
-                examPaperSubmitItemVM.setContentArray(correctAnswer);
+                examPaperSubmitItemVM.setContent(examPaperQuestionCustomerAnswer.getAnswer());
+                examPaperSubmitItemVM.setContentArray(ExamUtil.contentToArray(examPaperQuestionCustomerAnswer.getAnswer()));
                 break;
             default:
                 if (QuestionTypeEnum.needSaveTextContent(examPaperQuestionCustomerAnswer.getQuestionType())) {

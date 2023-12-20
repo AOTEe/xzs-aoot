@@ -50,7 +50,7 @@ public class DashboardController extends BaseApiController {
         User user = getCurrentUser();
 
         PaperFilter fixedPaperFilter = new PaperFilter();
-        fixedPaperFilter.setGradeLevel(user.getUserLevel());
+        //fixedPaperFilter.setGradeLevel(user.getUserLevel());去除年级
         fixedPaperFilter.setExamPaperType(ExamPaperTypeEnum.Fixed.getCode());
         indexVM.setFixedPaper(examPaperService.indexPaper(fixedPaperFilter));
 

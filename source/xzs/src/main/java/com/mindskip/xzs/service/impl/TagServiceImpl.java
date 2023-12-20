@@ -84,4 +84,14 @@ public class TagServiceImpl implements TagService {
     public List<Tag> getTagsByIds(String[] ids) {
         return tagMapper.getTagsByIds(ids);
     }
+
+
+    public void editTag(Tag tag){
+        if (StringUtil.isNull(tag.getTagId())){
+            tag.setTagId(UUID.randomUUID().toString());
+            tagMapper.insert(tag);
+        }else {
+            tagMapper.updateById(tag);
+        }
+    }
 }

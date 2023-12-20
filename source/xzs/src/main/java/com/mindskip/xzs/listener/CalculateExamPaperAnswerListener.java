@@ -61,13 +61,14 @@ public class CalculateExamPaperAnswerListener implements ApplicationListener<Cal
         List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers = examPaperAnswerInfo.getExamPaperQuestionCustomerAnswers();
 
         examPaperAnswerService.insertByFilter(examPaperAnswer);
-        examPaperQuestionCustomerAnswers.stream().filter(a -> QuestionTypeEnum.needSaveTextContent(a.getQuestionType())).forEach(d -> {
-            TextContent textContent = new TextContent(d.getAnswer(), now);
-            textContent.setId(new SnowFlakeGenerateIDUtil().generateID());
-            textContentService.insertByFilter(textContent);
-            d.setTextContentId(textContent.getId());
-            d.setAnswer(null);
-        });
+        //不需要将answer另外保存至一张表
+//        examPaperQuestionCustomerAnswers.stream().filter(a -> QuestionTypeEnum.needSaveTextContent(a.getQuestionType())).forEach(d -> {
+//            TextContent textContent = new TextContent(d.getAnswer(), now);
+//            textContent.setId(new SnowFlakeGenerateIDUtil().generateID());
+//            textContentService.insertByFilter(textContent);
+//            d.setTextContentId(textContent.getId());
+//            d.setAnswer(null);
+//        });
         for (ExamPaperQuestionCustomerAnswer item : examPaperQuestionCustomerAnswers) {
 //            try {
 //                //这ID生成的方法有bug，时间间隔太短，ID会复用
