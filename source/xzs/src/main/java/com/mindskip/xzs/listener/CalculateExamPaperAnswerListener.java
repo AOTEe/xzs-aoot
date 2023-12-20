@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -68,13 +69,13 @@ public class CalculateExamPaperAnswerListener implements ApplicationListener<Cal
             d.setAnswer(null);
         });
         for (ExamPaperQuestionCustomerAnswer item : examPaperQuestionCustomerAnswers) {
-            try {
-                //这ID生成的方法有bug，时间间隔太短，ID会复用
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            String id = new SnowFlakeGenerateIDUtil().generateID();
+//            try {
+//                //这ID生成的方法有bug，时间间隔太短，ID会复用
+//                Thread.sleep(10);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+            String id = UUID.randomUUID().toString();
             item.setId(id);
 
             item.setExamPaperAnswerId(examPaperAnswer.getId());
