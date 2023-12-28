@@ -84,11 +84,9 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         Integer gradeLevel = subjectService.levelBySubjectId(model.getSubjectId());
 
         //题干、解析、选项等 插入
-        TextContent infoTextContent = new TextContent();
-        infoTextContent.setCreateTime(now);
-        infoTextContent.setId(UUID.randomUUID().toString());
-        setQuestionInfoFromVM(infoTextContent, model);
-        textContentService.insertByFilter(infoTextContent);
+
+        String  infoTextContent =  setQuestionInfoFromVM( model);
+        //textContentService.insertByFilter(infoTextContent);
 
         Question question = new Question();
         question.setSubjectId(model.getSubjectId());
@@ -99,10 +97,11 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         question.setCorrectFromVM(model.getCorrect(), model.getCorrectArray());
         question.setScore(ExamUtil.scoreFromVM(model.getScore()));
         question.setDifficult(model.getDifficult());
-        question.setInfoTextContentId(infoTextContent.getId());
+        //question.setInfoTextContentId(infoTextContent.getId());
         question.setCreateUser(userId);
         question.setDeleted(false);
         question.setId(UUID.randomUUID().toString());
+        question.setInfoTextContent(infoTextContent);
         questionMapper.insertSelective(question);
         return question;
     }
@@ -119,12 +118,14 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         question.setCorrectFromVM(model.getCorrect(), model.getCorrectArray());
         question.setTags(StringUtil.list2String(model.getTags(),",") );
         question.setTagsName(StringUtil.list2String(model.getTagsName(),",") );
-        questionMapper.updateByPrimaryKeySelective(question);
+
 
         //题干、解析、选项等 更新
-        TextContent infoTextContent = textContentService.selectById(question.getInfoTextContentId());
-        setQuestionInfoFromVM(infoTextContent, model);
-        textContentService.updateByIdFilter(infoTextContent);
+        //TextContent infoTextContent = textContentService.selectById(question.getInfoTextContentId());
+        String contentText = setQuestionInfoFromVM(model);
+        question.setInfoTextContent(contentText);
+        questionMapper.updateByPrimaryKeySelective(question);
+        //textContentService.updateByIdFilter(infoTextContent);
 
         return question;
     }
@@ -180,7 +181,7 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         return questionEditRequestVM;
     }
 
-    public void setQuestionInfoFromVM(TextContent infoTextContent, QuestionEditRequestVM model) {
+    public String setQuestionInfoFromVM( QuestionEditRequestVM model) {
         List<QuestionItemObject> itemObjects = model.getItems().stream().map(i ->
                 {
                     QuestionItemObject item = new QuestionItemObject();
@@ -196,7 +197,8 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         questionObject.setAnalyze(model.getAnalyze());
         questionObject.setTitleContent(model.getTitle());
         questionObject.setCorrect(model.getCorrect());
-        infoTextContent.setContent(JsonUtil.toJsonStr(questionObject));
+        String infoText = JsonUtil.toJsonStr(questionObject);
+        return infoText;
     }
 
     @Override

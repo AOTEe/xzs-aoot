@@ -12,6 +12,7 @@
     <result column="difficult" jdbcType="INTEGER" property="difficult" />
     <result column="correct" jdbcType="VARCHAR" property="correct" />
     <result column="info_text_content_id" jdbcType="VARCHAR" property="infoTextContentId" />
+    <result column="info_text_content" jdbcType="VARCHAR" property="infoTextContent" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -34,13 +35,14 @@
   <insert id="insert" parameterType="com.mindskip.xzs.domain.Question" useGeneratedKeys="true" keyProperty="id">
     insert into t_question (id, question_type, subject_id,tags,tags_name,
       score, grade_level, difficult,
-      correct, info_text_content_id, create_user,
+      correct, info_text_content_id, info_text_content create_user,
       status, create_time, deleted
       )
     values (#{id,jdbcType=VARCHAR}, #{questionType,jdbcType=INTEGER}, #{subjectId,jdbcType=VARCHAR},
       #{tags,jdbcType=VARCHAR},#{tagsName,jdbcType=VARCHAR},
       #{score,jdbcType=INTEGER}, #{gradeLevel,jdbcType=INTEGER}, #{difficult,jdbcType=INTEGER},
-      #{correct,jdbcType=VARCHAR}, #{infoTextContentId,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR},
+      #{correct,jdbcType=VARCHAR}, #{infoTextContentId,jdbcType=VARCHAR},
+       #{infoTextContent,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR},
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
       )
   </insert>
@@ -76,6 +78,9 @@
       </if>
       <if test="infoTextContentId != null">
         info_text_content_id,
+      </if>
+      <if test="infoTextContent != null">
+        info_text_content,
       </if>
       <if test="createUser != null">
         create_user,
@@ -121,6 +126,9 @@
       <if test="infoTextContentId != null">
         #{infoTextContentId,jdbcType=VARCHAR},
       </if>
+      <if test="infoTextContent != null">
+        #{infoTextContent,jdbcType=VARCHAR},
+      </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>
@@ -159,6 +167,9 @@
       <if test="infoTextContentId != null">
         info_text_content_id = #{infoTextContentId,jdbcType=VARCHAR},
       </if>
+      <if test="infoTextContent != null">
+        info_text_content = #{infoTextContentId,jdbcType=VARCHAR},
+      </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
       </if>
@@ -189,6 +200,7 @@
       difficult = #{difficult,jdbcType=INTEGER},
       correct = #{correct,jdbcType=VARCHAR},
       info_text_content_id = #{infoTextContentId,jdbcType=VARCHAR},
+      info_text_content = #{infoTextContent,jdbcType=VARCHAR},
       create_user = #{createUser,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},

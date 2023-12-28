@@ -47,8 +47,14 @@ public class QuestionController extends BaseApiController {
             QuestionResponseVM vm = modelMapper.map(q, QuestionResponseVM.class);
             vm.setCreateTime(DateTimeUtil.dateFormat(q.getCreateTime()));
             //vm.setScore(ExamUtil.scoreToVM(q.getScore()));
-            TextContent textContent = textContentService.selectById(q.getInfoTextContentId());
-            QuestionObject questionObject = JsonUtil.toJsonObject(textContent.getContent(), QuestionObject.class);
+            String content = "";//新添加的数据不再另外关联t_text_content表
+            if (StringUtil.isNull(q.getInfoTextContentId())){
+                content = q.getInfoTextContent();
+            }else {
+                TextContent textContent = textContentService.selectById(q.getInfoTextContentId());
+                content = textContent.getContent();
+            }
+            QuestionObject questionObject = JsonUtil.toJsonObject(content, QuestionObject.class);
             String clearHtml = HtmlUtil.clear(questionObject.getTitleContent());
             vm.setShortTitle(clearHtml);
             return vm;
