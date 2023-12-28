@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="form" ref="form" label-width="100px" v-loading="formLoading" :rules="rules">
       <el-form-item label="学科：" prop="subjectId" required>
-        <el-select v-model="form.subjectId" placeholder="学科" >
+        <el-select v-model="form.subjectId" placeholder="学科" @change="handleSubjectChange" >
           <el-option v-for="item in subjectFilter" :key="item.id" :value="item.id" :label="item.name"></el-option>
         </el-select>
       </el-form-item>
@@ -168,8 +168,10 @@ export default {
       console.log(data)
       console.log(this.form.tags)
       console.log(this.form.tagsName)
-      this.form.tags.push(data.row.tagId)
-      this.form.tagsName.push(data.row.tagName)
+      if (this.form.tags.findIndex(item => item == data.row.tagId) == -1){
+        this.form.tags.push(data.row.tagId)
+        this.form.tagsName.push(data.row.tagName)
+      }
     },
     doQueryTag() {//查询某学科下的知识点
       console.log(this.form.subjectId)
@@ -179,8 +181,11 @@ export default {
           this.queryTags = re.data.list
         })
       }
-    }
-    ,
+    },
+    handleSubjectChange(){
+      this.tagQueryParam.subjectId = this.form.subjectId
+      this.doQueryTag()
+    },
     editorReady (instance) {
       this.richEditor.instance = instance
       let currentContent = this.richEditor.object[this.richEditor.parameterName]

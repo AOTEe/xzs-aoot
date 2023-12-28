@@ -169,8 +169,10 @@ export default {
       console.log(data)
       console.log(this.form.tags)
       console.log(this.form.tagsName)
-      this.form.tags.push(data.row.tagId)
-      this.form.tagsName.push(data.row.tagName)
+      if (this.form.tags.findIndex(item => item == data.row.tagId) == -1){
+        this.form.tags.push(data.row.tagId)
+        this.form.tagsName.push(data.row.tagName)
+      }
     },
     doQueryTag() {//查询某学科下的知识点
       console.log(this.form.subjectId)
