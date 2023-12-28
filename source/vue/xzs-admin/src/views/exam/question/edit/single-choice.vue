@@ -239,12 +239,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.formLoading = true
-          //tag换成string
           let formData = this.form
-          console.log(formData)
-          formData.tags=formData.tags.toString()
-          formData.tagsName=formData.tagsName.toString()
-
           questionApi.edit(formData).then(re => {
             if (re.code === 1) {
               _this.$message.success(re.message)
